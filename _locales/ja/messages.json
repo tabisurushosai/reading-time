@@ -49,5 +49,19 @@
   },
   "errorOccurred": {
     "message": "エラーが発生しました"
+  },
+  "trialStatus": {
+    "message": "試用期間: 残り$DAYS$日",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "premiumStatus": {
+    "message": "プレミアムユーザー"
+  },
+  "upgradeButton": {
+    "message": "アップグレード"
   }
 }

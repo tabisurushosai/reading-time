@@ -49,5 +49,19 @@
   },
   "errorOccurred": {
     "message": "An error occurred"
+  },
+  "trialStatus": {
+    "message": "Trial: $DAYS$ days left",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "premiumStatus": {
+    "message": "Premium User"
+  },
+  "upgradeButton": {
+    "message": "Upgrade"
   }
 }
