@@ -7,5 +7,5 @@
 - [x] T006: _locales ja/en を chrome.i18n で全UIに適用
 - [x] T007: Premiumゲート(trial_start_ts+Stripe)。無料は基本、Premiumでサイト別速度記憶・履歴
 - [x] T008: npm run build を通しts/lintを解消
-- [ ] T009: release/reading-time.zip 生成(node_modules除外)
+- [x] T009: release/reading-time.zip 生成(node_modules除外)
 - [ ] T010: legal/PRIVACY.md と TERMS.md(外部通信なし・データ収集なし・$3買い切り7日トライアル明記)
