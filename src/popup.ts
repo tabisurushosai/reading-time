@@ -1,13 +1,28 @@
-let charCount = 0;
-let wordCount = 0;
-let speedJa = 400;
-let speedEn = 200;
+import {
+  DEFAULT_READING_SPEEDS,
+  estimateReadingMinutes,
+  type ReadingLanguage,
+  type ReadingSpeeds,
+  type TextStats,
+} from "./core/reading";
+import {
+  applySiteSpeeds,
+  getTrialRemainingDays,
+  hasPremiumAccess,
+  normalizeStoredSettings,
+  setDomainSpeeds,
+  type SiteSpeeds,
+} from "./core/settings";
+import { chromeLocalStorageAdapter } from "./storage/chromeLocalStorage";
+
+let textStats: TextStats = { charCount: 0, wordCount: 0 };
+let speeds: ReadingSpeeds = { ...DEFAULT_READING_SPEEDS };
 let currentTabId: number | undefined;
 let currentDomain: string | undefined;
 let isPremium = false;
 let trialStartTs = 0;
+let siteSpeeds: SiteSpeeds = {};
 
-const TRIAL_DAYS = 7;
 type ResultState = "loading" | "ready" | "empty" | "error";
 
 const resultStateMessageKeys: Record<ResultState, string> = {
@@ -32,42 +47,30 @@ function setResultState(state: ResultState) {
 }
 
 async function loadSettings() {
-  const result = await chrome.storage.local.get([
-    "speedJa", 
-    "speedEn", 
-    "isPremium", 
-    "trialStartTs",
-    "siteSpeeds"
-  ]);
+  const storedSettings = await chromeLocalStorageAdapter.get();
+  const settings = normalizeStoredSettings(storedSettings, Date.now());
 
-  isPremium = result.isPremium || false;
-  trialStartTs = result.trialStartTs || 0;
+  isPremium = settings.isPremium;
+  trialStartTs = settings.trialStartTs;
+  siteSpeeds = settings.siteSpeeds;
 
-  if (!trialStartTs) {
-    trialStartTs = Date.now();
-    await chrome.storage.local.set({ trialStartTs });
+  if (!storedSettings.trialStartTs) {
+    await chromeLocalStorageAdapter.set({ trialStartTs });
   }
 
-  speedJa = result.speedJa || 400;
-  speedEn = result.speedEn || 200;
-
-  // Check if we have site-specific speeds
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab && tab.url) {
     try {
       currentDomain = new URL(tab.url).hostname;
-      if (currentDomain && result.siteSpeeds && result.siteSpeeds[currentDomain]) {
-        const siteSpeed = result.siteSpeeds[currentDomain];
-        if (siteSpeed.speedJa) speedJa = siteSpeed.speedJa;
-        if (siteSpeed.speedEn) speedEn = siteSpeed.speedEn;
-      }
     } catch (e) {
       console.error("Failed to parse URL", e);
     }
   }
 
-  (document.getElementById("speed-ja") as HTMLInputElement).value = speedJa.toString();
-  (document.getElementById("speed-en") as HTMLInputElement).value = speedEn.toString();
+  speeds = applySiteSpeeds(settings, siteSpeeds, currentDomain);
+
+  (document.getElementById("speed-ja") as HTMLInputElement).value = speeds.speedJa.toString();
+  (document.getElementById("speed-en") as HTMLInputElement).value = speeds.speedEn.toString();
 
   localizeUI();
   updatePremiumUI();
@@ -77,9 +80,7 @@ function updatePremiumUI() {
   const statusEl = document.getElementById("premium-status");
   if (!statusEl) return;
 
-  const now = Date.now();
-  const trialElapsed = now - trialStartTs;
-  const trialRemaining = Math.max(0, TRIAL_DAYS - (trialElapsed / (1000 * 60 * 60 * 24)));
+  const trialRemaining = getTrialRemainingDays(trialStartTs, Date.now());
   
   if (isPremium) {
     statusEl.innerText = chrome.i18n.getMessage("premiumStatus");
@@ -117,24 +118,29 @@ function localizeUI() {
 }
 
 async function saveSettings() {
-  speedJa = parseInt((document.getElementById("speed-ja") as HTMLInputElement).value) || 400;
-  speedEn = parseInt((document.getElementById("speed-en") as HTMLInputElement).value) || 200;
-  
+  speeds = {
+    speedJa: parseInt((document.getElementById("speed-ja") as HTMLInputElement).value) || DEFAULT_READING_SPEEDS.speedJa,
+    speedEn: parseInt((document.getElementById("speed-en") as HTMLInputElement).value) || DEFAULT_READING_SPEEDS.speedEn,
+  };
+
   const now = Date.now();
-  const trialRemaining = Math.max(0, TRIAL_DAYS - ((now - trialStartTs) / (1000 * 60 * 60 * 24)));
-  const hasAccess = isPremium || trialRemaining > 0;
+  const hasAccess = hasPremiumAccess(isPremium, trialStartTs, now);
 
   if (hasAccess && currentDomain) {
-    // Premium feature: site-specific speed
-    const result = await chrome.storage.local.get("siteSpeeds");
-    const siteSpeeds = result.siteSpeeds || {};
-    siteSpeeds[currentDomain] = { speedJa, speedEn };
-    await chrome.storage.local.set({ siteSpeeds, speedJa, speedEn });
+    const result = await chromeLocalStorageAdapter.get("siteSpeeds");
+    siteSpeeds = setDomainSpeeds(result.siteSpeeds || {}, currentDomain, speeds);
+    await chromeLocalStorageAdapter.set({
+      siteSpeeds,
+      speedJa: speeds.speedJa,
+      speedEn: speeds.speedEn,
+    });
   } else {
-    // Normal save
-    await chrome.storage.local.set({ speedJa, speedEn });
+    await chromeLocalStorageAdapter.set({
+      speedJa: speeds.speedJa,
+      speedEn: speeds.speedEn,
+    });
   }
-  
+
   updateDisplay();
 }
 
@@ -159,12 +165,11 @@ async function getTabCount() {
       },
     });
 
-    const result = results[0].result;
+    const result = results[0].result as TextStats | undefined;
     if (result) {
-      charCount = result.charCount;
-      wordCount = result.wordCount;
+      textStats = result;
     }
-    
+
     updateDisplay();
   } catch (error) {
     console.error("Failed to execute script:", error);
@@ -183,20 +188,19 @@ async function getTabCount() {
 function updateDisplay() {
   const langEl = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
   if (!langEl) return;
-  const lang = langEl.value;
+  const lang: ReadingLanguage = langEl.value === "en" ? "en" : "ja";
   const stats = document.getElementById("stats");
   const readingTime = document.getElementById("reading-time");
 
   if (!stats || !readingTime) return;
 
-  let minutes: number;
+  const minutes = estimateReadingMinutes(textStats, lang, speeds);
+
   if (lang === "ja") {
-    stats.innerText = chrome.i18n.getMessage("charCount", [charCount.toString()]);
-    minutes = Math.ceil(charCount / speedJa);
+    stats.innerText = chrome.i18n.getMessage("charCount", [textStats.charCount.toString()]);
     readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
   } else {
-    stats.innerText = chrome.i18n.getMessage("wordCount", [wordCount.toString()]);
-    minutes = Math.ceil(wordCount / speedEn);
+    stats.innerText = chrome.i18n.getMessage("wordCount", [textStats.wordCount.toString()]);
     readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
   }
   setResultState(minutes > 0 ? "ready" : "empty");
