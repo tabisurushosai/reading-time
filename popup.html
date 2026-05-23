@@ -1,1 +1,23 @@
-<!doctype html><html><head><meta charset="utf-8"></head><body style="width:280px;font-family:system-ui;padding:10px"><h3>よむ時間めやす</h3><div id="app">…</div><script type="module" src="/src/popup.ts"></script></body></html>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { width: 280px; font-family: system-ui; padding: 10px; }
+    .controls { margin-bottom: 10px; font-size: 0.9em; }
+    .result { font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h3>よむ時間めやす</h3>
+  <div class="controls">
+    <label><input type="radio" name="lang" value="ja" checked> 日本語</label>
+    <label><input type="radio" name="lang" value="en"> English</label>
+  </div>
+  <div id="app">
+    <div id="stats">…</div>
+    <div id="reading-time" class="result"></div>
+  </div>
+  <script type="module" src="/src/popup.ts"></script>
+</body>
+</html>
