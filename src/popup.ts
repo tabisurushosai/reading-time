@@ -59,8 +59,6 @@ function updatePremiumUI() {
   const trialElapsed = now - trialStartTs;
   const trialRemaining = Math.max(0, TRIAL_DAYS - (trialElapsed / (1000 * 60 * 60 * 24)));
   
-  const hasAccess = isPremium || trialRemaining > 0;
-
   if (isPremium) {
     statusEl.innerText = chrome.i18n.getMessage("premiumStatus");
     statusEl.style.color = "gold";
@@ -163,7 +161,7 @@ function updateDisplay() {
 
   if (!stats || !readingTime) return;
 
-  let minutes = 0;
+  let minutes: number;
   if (lang === "ja") {
     stats.innerText = chrome.i18n.getMessage("charCount", [charCount.toString()]);
     minutes = Math.ceil(charCount / speedJa);
