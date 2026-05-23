@@ -1,5 +1,26 @@
 let charCount = 0;
 let wordCount = 0;
+let speedJa = 400;
+let speedEn = 200;
+
+async function loadSettings() {
+  const result = await chrome.storage.local.get(["speedJa", "speedEn"]);
+  if (result.speedJa) {
+    speedJa = result.speedJa;
+    (document.getElementById("speed-ja") as HTMLInputElement).value = speedJa.toString();
+  }
+  if (result.speedEn) {
+    speedEn = result.speedEn;
+    (document.getElementById("speed-en") as HTMLInputElement).value = speedEn.toString();
+  }
+}
+
+async function saveSettings() {
+  speedJa = parseInt((document.getElementById("speed-ja") as HTMLInputElement).value) || 400;
+  speedEn = parseInt((document.getElementById("speed-en") as HTMLInputElement).value) || 200;
+  await chrome.storage.local.set({ speedJa, speedEn });
+  updateDisplay();
+}
 
 async function getTabCount() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -21,8 +42,10 @@ async function getTabCount() {
     });
 
     const result = results[0].result;
-    charCount = result.charCount;
-    wordCount = result.wordCount;
+    if (result) {
+      charCount = result.charCount;
+      wordCount = result.wordCount;
+    }
     
     updateDisplay();
   } catch (error) {
@@ -43,18 +66,25 @@ function updateDisplay() {
 
   if (lang === "ja") {
     stats.innerText = `文字数: ${charCount}`;
-    const minutes = Math.ceil(charCount / 400);
+    const minutes = Math.ceil(charCount / speedJa);
     readingTime.innerText = `読了時間: 約${minutes}分`;
   } else {
     stats.innerText = `Word count: ${wordCount}`;
-    const minutes = Math.ceil(wordCount / 200);
+    const minutes = Math.ceil(wordCount / speedEn);
     readingTime.innerText = `Reading time: approx. ${minutes} min`;
   }
 }
 
-// Event listeners for radio buttons
+// Event listeners
 document.querySelectorAll('input[name="lang"]').forEach(radio => {
   radio.addEventListener('change', updateDisplay);
 });
 
-getTabCount();
+document.getElementById("speed-ja")?.addEventListener("change", saveSettings);
+document.getElementById("speed-en")?.addEventListener("change", saveSettings);
+
+// Initial load
+(async () => {
+  await loadSettings();
+  await getTabCount();
+})();
