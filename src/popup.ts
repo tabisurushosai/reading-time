@@ -2,6 +2,7 @@ let charCount = 0;
 let wordCount = 0;
 let speedJa = 400;
 let speedEn = 200;
+let currentTabId: number | undefined;
 
 async function loadSettings() {
   const result = await chrome.storage.local.get(["speedJa", "speedEn"]);
@@ -25,6 +26,7 @@ async function saveSettings() {
 async function getTabCount() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab.id) return;
+  currentTabId = tab.id;
 
   try {
     const results = await chrome.scripting.executeScript({
@@ -64,15 +66,27 @@ function updateDisplay() {
 
   if (!stats || !readingTime) return;
 
+  let minutes = 0;
   if (lang === "ja") {
     stats.innerText = `文字数: ${charCount}`;
-    const minutes = Math.ceil(charCount / speedJa);
+    minutes = Math.ceil(charCount / speedJa);
     readingTime.innerText = `読了時間: 約${minutes}分`;
   } else {
     stats.innerText = `Word count: ${wordCount}`;
-    const minutes = Math.ceil(wordCount / speedEn);
+    minutes = Math.ceil(wordCount / speedEn);
     readingTime.innerText = `Reading time: approx. ${minutes} min`;
   }
+
+  // Update action badge
+  const badgeText = minutes > 0 ? minutes.toString() : "";
+  chrome.action.setBadgeText({ 
+    text: badgeText,
+    tabId: currentTabId
+  });
+  chrome.action.setBadgeBackgroundColor({ 
+    color: "#4682B4",
+    tabId: currentTabId
+  });
 }
 
 // Event listeners
