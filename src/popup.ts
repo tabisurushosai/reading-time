@@ -8,6 +8,28 @@ let isPremium = false;
 let trialStartTs = 0;
 
 const TRIAL_DAYS = 7;
+type ResultState = "loading" | "ready" | "empty" | "error";
+
+const resultStateMessageKeys: Record<ResultState, string> = {
+  loading: "loadingStatus",
+  ready: "readyStatus",
+  empty: "emptyStatus",
+  error: "errorOccurred",
+};
+
+function setResultState(state: ResultState) {
+  const card = document.getElementById("result-card");
+  const statusLabel = document.getElementById("status-label");
+
+  if (card) {
+    card.classList.remove("is-loading", "is-ready", "is-empty", "is-error");
+    card.classList.add(`is-${state}`);
+  }
+
+  if (statusLabel) {
+    statusLabel.innerText = chrome.i18n.getMessage(resultStateMessageKeys[state]);
+  }
+}
 
 async function loadSettings() {
   const result = await chrome.storage.local.get([
@@ -61,13 +83,13 @@ function updatePremiumUI() {
   
   if (isPremium) {
     statusEl.innerText = chrome.i18n.getMessage("premiumStatus");
-    statusEl.style.color = "gold";
+    statusEl.className = "premium-status premium-status--premium";
   } else if (trialRemaining > 0) {
     statusEl.innerText = chrome.i18n.getMessage("trialStatus", [Math.ceil(trialRemaining).toString()]);
-    statusEl.style.color = "green";
+    statusEl.className = "premium-status premium-status--trial";
   } else {
-    statusEl.innerText = "Free Version (Trial Ended)";
-    statusEl.style.color = "red";
+    statusEl.innerText = chrome.i18n.getMessage("freeStatus");
+    statusEl.className = "premium-status premium-status--free";
     // Show upgrade button
     const upgradeBtn = document.getElementById("upgrade-btn");
     if (upgradeBtn) upgradeBtn.style.display = "inline-block";
@@ -120,6 +142,7 @@ async function getTabCount() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab || !tab.id) return;
   currentTabId = tab.id;
+  setResultState("loading");
 
   try {
     const results = await chrome.scripting.executeScript({
@@ -145,9 +168,14 @@ async function getTabCount() {
     updateDisplay();
   } catch (error) {
     console.error("Failed to execute script:", error);
+    setResultState("error");
     const stats = document.getElementById("stats");
+    const readingTime = document.getElementById("reading-time");
     if (stats) {
       stats.innerText = chrome.i18n.getMessage("errorOccurred");
+    }
+    if (readingTime) {
+      readingTime.innerText = "";
     }
   }
 }
@@ -171,6 +199,7 @@ function updateDisplay() {
     minutes = Math.ceil(wordCount / speedEn);
     readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
   }
+  setResultState(minutes > 0 ? "ready" : "empty");
 
   // Update action badge
   const badgeText = minutes > 0 ? minutes.toString() : "";
