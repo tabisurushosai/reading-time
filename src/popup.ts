@@ -14,6 +14,26 @@ async function loadSettings() {
     speedEn = result.speedEn;
     (document.getElementById("speed-en") as HTMLInputElement).value = speedEn.toString();
   }
+  localizeUI();
+}
+
+function localizeUI() {
+  const elements = {
+    "app-title": "extName",
+    "label-lang-ja": "langJa",
+    "label-lang-en": "langEn",
+    "label-speed-ja": "speedJaLabel",
+    "label-speed-en": "speedEnLabel",
+    "unit-speed-ja": "unitCharsPerMin",
+    "unit-speed-en": "unitWordsPerMin",
+  };
+
+  for (const [id, key] of Object.entries(elements)) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.innerText = chrome.i18n.getMessage(key);
+    }
+  }
 }
 
 async function saveSettings() {
@@ -54,7 +74,7 @@ async function getTabCount() {
     console.error("Failed to execute script:", error);
     const stats = document.getElementById("stats");
     if (stats) {
-      stats.innerText = "エラーが発生しました";
+      stats.innerText = chrome.i18n.getMessage("errorOccurred");
     }
   }
 }
@@ -68,13 +88,13 @@ function updateDisplay() {
 
   let minutes = 0;
   if (lang === "ja") {
-    stats.innerText = `文字数: ${charCount}`;
+    stats.innerText = chrome.i18n.getMessage("charCount", [charCount.toString()]);
     minutes = Math.ceil(charCount / speedJa);
-    readingTime.innerText = `読了時間: 約${minutes}分`;
+    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
   } else {
-    stats.innerText = `Word count: ${wordCount}`;
+    stats.innerText = chrome.i18n.getMessage("wordCount", [wordCount.toString()]);
     minutes = Math.ceil(wordCount / speedEn);
-    readingTime.innerText = `Reading time: approx. ${minutes} min`;
+    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
   }
 
   // Update action badge

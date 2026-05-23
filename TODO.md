@@ -4,7 +4,7 @@
 - [x] T003: 文字数→読了分数(日本語400字/分・英語200語/分の切替)を計算して表示
 - [x] T004: 読む速さ(分速)をstorage.localで設定可能にする
 - [x] T005: アクションバッジに分数を表示(chrome.action.setBadgeText)
-- [ ] T006: _locales ja/en を chrome.i18n で全UIに適用
+- [x] T006: _locales ja/en を chrome.i18n で全UIに適用
 - [ ] T007: Premiumゲート(trial_start_ts+Stripe)。無料は基本、Premiumでサイト別速度記憶・履歴
 - [ ] T008: npm run build を通しts/lintを解消
 - [ ] T009: release/reading-time.zip 生成(node_modules除外)

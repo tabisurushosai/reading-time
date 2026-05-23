@@ -1,1 +1,53 @@
-{ "extName":{"message":"よむ時間めやす"},"extDesc":{"message":"今のページを読むのにかかる時間の目安を表示。長文の見通しに。"} }
+{
+  "extName": {
+    "message": "よむ時間めやす"
+  },
+  "extDesc": {
+    "message": "今のページを読むのにかかる時間の目安を表示。長文の見通しに。"
+  },
+  "langJa": {
+    "message": "日本語"
+  },
+  "langEn": {
+    "message": "English"
+  },
+  "speedJaLabel": {
+    "message": "分速 (日本語)"
+  },
+  "speedEnLabel": {
+    "message": "分速 (英語)"
+  },
+  "unitCharsPerMin": {
+    "message": "字/分"
+  },
+  "unitWordsPerMin": {
+    "message": "wpm"
+  },
+  "charCount": {
+    "message": "文字数: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wordCount": {
+    "message": "単語数: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "readingTimeResult": {
+    "message": "読了時間: 約$MINUTES$分",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorOccurred": {
+    "message": "エラーが発生しました"
+  }
+}

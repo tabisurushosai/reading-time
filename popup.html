@@ -9,14 +9,14 @@
   </style>
 </head>
 <body>
-  <h3>よむ時間めやす</h3>
+  <h3 id="app-title">よむ時間めやす</h3>
   <div class="controls">
-    <label><input type="radio" name="lang" value="ja" checked> 日本語</label>
-    <label><input type="radio" name="lang" value="en"> English</label>
+    <label><input type="radio" name="lang" value="ja" checked> <span id="label-lang-ja">日本語</span></label>
+    <label><input type="radio" name="lang" value="en"> <span id="label-lang-en">English</span></label>
   </div>
   <div class="settings" style="margin-top: 10px; font-size: 0.8em; border-top: 1px solid #ccc; padding-top: 5px;">
-    <div>分速 (Japanese): <input type="number" id="speed-ja" value="400" style="width: 50px;"> 字/分</div>
-    <div>Speed (English): <input type="number" id="speed-en" value="200" style="width: 50px;"> wpm</div>
+    <div><span id="label-speed-ja">分速 (Japanese)</span>: <input type="number" id="speed-ja" value="400" style="width: 50px;"> <span id="unit-speed-ja">字/分</span></div>
+    <div><span id="label-speed-en">Speed (English)</span>: <input type="number" id="speed-en" value="200" style="width: 50px;"> <span id="unit-speed-en">wpm</span></div>
   </div>
   <div id="app">
     <div id="stats">…</div>

@@ -1,1 +1,53 @@
-{ "extName":{"message":"Reading Time"},"extDesc":{"message":"Estimates how long the current page takes to read."} }
+{
+  "extName": {
+    "message": "Reading Time"
+  },
+  "extDesc": {
+    "message": "Estimates how long the current page takes to read."
+  },
+  "langJa": {
+    "message": "Japanese"
+  },
+  "langEn": {
+    "message": "English"
+  },
+  "speedJaLabel": {
+    "message": "Speed (Japanese)"
+  },
+  "speedEnLabel": {
+    "message": "Speed (English)"
+  },
+  "unitCharsPerMin": {
+    "message": "chars/min"
+  },
+  "unitWordsPerMin": {
+    "message": "wpm"
+  },
+  "charCount": {
+    "message": "Character count: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "wordCount": {
+    "message": "Word count: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "readingTimeResult": {
+    "message": "Reading time: approx. $MINUTES$ min",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorOccurred": {
+    "message": "An error occurred"
+  }
+}
