@@ -1,5 +1,5 @@
 # reading-time TODO (細粒度)
-- [ ] T001: src/content.ts で本文(article/main/body)のテキスト文字数を数えて返す関数を実装するだけ
+- [x] T001: src/content.ts で本文(article/main/body)のテキスト文字数を数えて返す関数を実装するだけ
 - [ ] T002: src/popup.ts で scripting.executeScript により現在タブの文字数を取得しpopup表示
 - [ ] T003: 文字数→読了分数(日本語400字/分・英語200語/分の切替)を計算して表示
 - [ ] T004: 読む速さ(分速)をstorage.localで設定可能にする
