@@ -3,7 +3,7 @@
     "message": "Reading Time"
   },
   "extDesc": {
-    "message": "Estimates how long the current page takes to read."
+    "message": "Estimates how long it will take to read the current page."
   },
   "langJa": {
     "message": "Japanese"
@@ -12,16 +12,16 @@
     "message": "English"
   },
   "speedJaLabel": {
-    "message": "Speed (Japanese)"
+    "message": "Reading speed (Japanese)"
   },
   "speedEnLabel": {
-    "message": "Speed (English)"
+    "message": "Reading speed (English)"
   },
   "unitCharsPerMin": {
     "message": "chars/min"
   },
   "unitWordsPerMin": {
-    "message": "wpm"
+    "message": "words/min"
   },
   "charCount": {
     "message": "Character count: $COUNT$",
@@ -40,7 +40,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "Reading time: approx. $MINUTES$ min",
+    "message": "Estimated reading time: about $MINUTES$ min",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -48,19 +48,27 @@
     }
   },
   "errorOccurred": {
-    "message": "An error occurred"
+    "message": "Could not read this page"
   },
   "loadingStatus": {
-    "message": "Loading"
+    "message": "Reading page"
   },
   "readyStatus": {
-    "message": "Ready"
+    "message": "Reading time calculated"
   },
   "emptyStatus": {
     "message": "No readable text found"
   },
+  "trialStatusOne": {
+    "message": "Trial: $DAYS$ day remaining",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
   "trialStatus": {
-    "message": "Trial: $DAYS$ days left",
+    "message": "Trial: $DAYS$ days remaining",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -68,7 +76,7 @@
     }
   },
   "premiumStatus": {
-    "message": "Premium User"
+    "message": "Premium active"
   },
   "freeStatus": {
     "message": "Free version (trial ended)"

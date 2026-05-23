@@ -9,22 +9,22 @@
     "message": "日本語"
   },
   "langEn": {
-    "message": "English"
+    "message": "英語"
   },
   "speedJaLabel": {
-    "message": "分速 (日本語)"
+    "message": "読む速さ（日本語）"
   },
   "speedEnLabel": {
-    "message": "分速 (英語)"
+    "message": "読む速さ（英語）"
   },
   "unitCharsPerMin": {
     "message": "字/分"
   },
   "unitWordsPerMin": {
-    "message": "wpm"
+    "message": "語/分"
   },
   "charCount": {
-    "message": "文字数: $COUNT$",
+    "message": "文字数: $COUNT$字",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -32,7 +32,7 @@
     }
   },
   "wordCount": {
-    "message": "単語数: $COUNT$",
+    "message": "単語数: $COUNT$語",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -40,7 +40,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "読了時間: 約$MINUTES$分",
+    "message": "読了目安: 約$MINUTES$分",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -48,16 +48,24 @@
     }
   },
   "errorOccurred": {
-    "message": "エラーが発生しました"
+    "message": "ページを読み取れませんでした"
   },
   "loadingStatus": {
-    "message": "読み込み中"
+    "message": "読み取り中"
   },
   "readyStatus": {
-    "message": "計算完了"
+    "message": "読了時間を計算しました"
   },
   "emptyStatus": {
-    "message": "本文が見つかりません"
+    "message": "本文テキストが見つかりません"
+  },
+  "trialStatusOne": {
+    "message": "試用期間: 残り$DAYS$日",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "trialStatus": {
     "message": "試用期間: 残り$DAYS$日",
@@ -68,7 +76,7 @@
     }
   },
   "premiumStatus": {
-    "message": "プレミアムユーザー"
+    "message": "プレミアム版"
   },
   "freeStatus": {
     "message": "無料版（試用期間終了）"

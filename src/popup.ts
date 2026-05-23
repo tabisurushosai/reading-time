@@ -32,6 +32,22 @@ const resultStateMessageKeys: Record<ResultState, string> = {
   error: "errorOccurred",
 };
 
+const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
+  ? "ja-JP"
+  : "en-US";
+const numberFormatter = new Intl.NumberFormat(uiLocale);
+
+function formatDisplayNumber(value: number): string {
+  return numberFormatter.format(value);
+}
+
+function getTrialStatusMessage(trialRemainingDays: number): string {
+  const days = Math.ceil(trialRemainingDays);
+  const messageKey = days === 1 ? "trialStatusOne" : "trialStatus";
+
+  return chrome.i18n.getMessage(messageKey, [formatDisplayNumber(days)]);
+}
+
 function setResultState(state: ResultState) {
   const card = document.getElementById("result-card");
   const statusLabel = document.getElementById("status-label");
@@ -86,7 +102,7 @@ function updatePremiumUI() {
     statusEl.innerText = chrome.i18n.getMessage("premiumStatus");
     statusEl.className = "premium-status premium-status--premium";
   } else if (trialRemaining > 0) {
-    statusEl.innerText = chrome.i18n.getMessage("trialStatus", [Math.ceil(trialRemaining).toString()]);
+    statusEl.innerText = getTrialStatusMessage(trialRemaining);
     statusEl.className = "premium-status premium-status--trial";
   } else {
     statusEl.innerText = chrome.i18n.getMessage("freeStatus");
@@ -98,6 +114,9 @@ function updatePremiumUI() {
 }
 
 function localizeUI() {
+  document.documentElement.lang = uiLocale;
+  document.title = chrome.i18n.getMessage("extName");
+
   const elements = {
     "app-title": "extName",
     "label-lang-ja": "langJa",
@@ -197,11 +216,11 @@ function updateDisplay() {
   const minutes = estimateReadingMinutes(textStats, lang, speeds);
 
   if (lang === "ja") {
-    stats.innerText = chrome.i18n.getMessage("charCount", [textStats.charCount.toString()]);
-    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
+    stats.innerText = chrome.i18n.getMessage("charCount", [formatDisplayNumber(textStats.charCount)]);
+    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
   } else {
-    stats.innerText = chrome.i18n.getMessage("wordCount", [textStats.wordCount.toString()]);
-    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [minutes.toString()]);
+    stats.innerText = chrome.i18n.getMessage("wordCount", [formatDisplayNumber(textStats.wordCount)]);
+    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
   }
   setResultState(minutes > 0 ? "ready" : "empty");
 
