@@ -50,6 +50,15 @@
   "errorOccurred": {
     "message": "An error occurred"
   },
+  "loadingStatus": {
+    "message": "Loading"
+  },
+  "readyStatus": {
+    "message": "Ready"
+  },
+  "emptyStatus": {
+    "message": "No readable text found"
+  },
   "trialStatus": {
     "message": "Trial: $DAYS$ days left",
     "placeholders": {
@@ -60,6 +69,9 @@
   },
   "premiumStatus": {
     "message": "Premium User"
+  },
+  "freeStatus": {
+    "message": "Free version (trial ended)"
   },
   "upgradeButton": {
     "message": "Upgrade"

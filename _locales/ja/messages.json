@@ -50,6 +50,15 @@
   "errorOccurred": {
     "message": "エラーが発生しました"
   },
+  "loadingStatus": {
+    "message": "読み込み中"
+  },
+  "readyStatus": {
+    "message": "計算完了"
+  },
+  "emptyStatus": {
+    "message": "本文が見つかりません"
+  },
   "trialStatus": {
     "message": "試用期間: 残り$DAYS$日",
     "placeholders": {
@@ -60,6 +69,9 @@
   },
   "premiumStatus": {
     "message": "プレミアムユーザー"
+  },
+  "freeStatus": {
+    "message": "無料版（試用期間終了）"
   },
   "upgradeButton": {
     "message": "アップグレード"
