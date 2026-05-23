@@ -193,14 +193,7 @@ document.getElementById("speed-ja")?.addEventListener("change", saveSettings);
 document.getElementById("speed-en")?.addEventListener("change", saveSettings);
 
 document.getElementById("upgrade-btn")?.addEventListener("click", () => {
-  // Stripe placeholder logic: just set premium to true for now as a "mock" or open a URL
-  // For the sake of this task, I'll just set it to true in storage to simulate successful payment
-  chrome.storage.local.set({ isPremium: true }).then(() => {
-    isPremium = true;
-    updatePremiumUI();
-    const upgradeBtn = document.getElementById("upgrade-btn");
-    if (upgradeBtn) upgradeBtn.style.display = "none";
-  });
+  console.warn("Premium upgrade flow is not configured.");
 });
 
 // Initial load
