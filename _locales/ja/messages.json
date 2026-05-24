@@ -11,6 +11,12 @@
   "langEn": {
     "message": "英語"
   },
+  "languageLegend": {
+    "message": "表示言語"
+  },
+  "settingsLegend": {
+    "message": "読む速さ"
+  },
   "speedJaLabel": {
     "message": "読む速さ（日本語）"
   },

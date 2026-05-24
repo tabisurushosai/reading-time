@@ -85,6 +85,7 @@ function setResultState(state: ResultState) {
   if (card) {
     card.classList.remove("is-loading", "is-ready", "is-empty", "is-error");
     card.classList.add(`is-${state}`);
+    card.setAttribute("aria-busy", state === "loading" ? "true" : "false");
   }
 
   if (statusLabel) {
@@ -151,6 +152,8 @@ function localizeUI() {
     "app-title": "extName",
     "label-lang-ja": "langJa",
     "label-lang-en": "langEn",
+    "language-legend": "languageLegend",
+    "settings-legend": "settingsLegend",
     "label-speed-ja": "speedJaLabel",
     "label-speed-en": "speedEnLabel",
     "unit-speed-ja": "unitCharsPerMin",

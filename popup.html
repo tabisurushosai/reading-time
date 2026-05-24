@@ -13,6 +13,7 @@
       --text: #0f172a;
       --muted: #475569;
       --accent: #2563eb;
+      --focus: #1d4ed8;
       --success: #15803d;
       --warning: #92400e;
       --error: #b91c1c;
@@ -107,24 +108,35 @@
     }
 
     .controls {
-      display: flex;
+      display: grid;
       gap: 8px;
-      align-items: center;
-      justify-content: space-between;
+      border: 1px solid var(--border);
     }
 
     .choice {
       display: inline-flex;
-      flex: 1;
       align-items: center;
       gap: 6px;
-      min-height: 34px;
-      padding: 6px 8px;
+      min-height: 44px;
+      padding: 9px 10px;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--surface-muted);
       color: var(--text);
+      cursor: pointer;
       font-weight: 600;
+    }
+
+    .choice:has(input:checked) {
+      border-color: var(--accent);
+      background: #dbeafe;
+    }
+
+    .choice:has(input:focus-visible),
+    .setting-row input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
     }
 
     .choice input {
@@ -135,23 +147,41 @@
     .settings {
       display: grid;
       gap: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .control-group {
+      margin: 0;
+      min-inline-size: 0;
+    }
+
+    .control-group legend {
+      margin-bottom: 8px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .setting-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 72px auto;
+      grid-template-columns: minmax(0, 1fr) 82px auto;
       gap: 8px;
       align-items: center;
       color: var(--muted);
       font-size: 12px;
     }
 
+    .setting-row + .setting-row {
+      margin-top: 10px;
+    }
+
     .setting-row input {
-      width: 72px;
-      min-height: 32px;
+      width: 82px;
+      min-height: 44px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 4px 6px;
+      padding: 8px;
       color: var(--text);
       font: inherit;
       text-align: right;
@@ -184,7 +214,9 @@
     button {
       border: 1px solid var(--accent);
       border-radius: 999px;
-      padding: 5px 10px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 9px 14px;
       background: var(--accent);
       color: #ffffff;
       font: inherit;
@@ -200,29 +232,31 @@
       <h1 id="app-title">よむ時間めやす</h1>
     </header>
 
-    <section id="result-card" class="card result-card is-loading" aria-live="polite">
+    <section id="result-card" class="card result-card is-loading" aria-live="polite" aria-atomic="true" aria-busy="true" aria-labelledby="status-label" aria-describedby="stats">
       <div id="status-label" class="status-label">読み込み中</div>
       <div id="reading-time" class="result">…</div>
       <div id="stats" class="stats">…</div>
     </section>
 
-    <div class="card controls">
+    <fieldset class="card controls control-group">
+      <legend id="language-legend">表示言語</legend>
       <label class="choice"><input type="radio" name="lang" value="ja" checked> <span id="label-lang-ja">日本語</span></label>
       <label class="choice"><input type="radio" name="lang" value="en"> <span id="label-lang-en">English</span></label>
-    </div>
+    </fieldset>
 
-    <div class="card settings">
+    <fieldset class="card settings control-group">
+      <legend id="settings-legend">読む速さ</legend>
       <label class="setting-row">
         <span id="label-speed-ja">読む速さ（日本語）</span>
-        <input type="number" id="speed-ja" value="400">
+        <input type="number" id="speed-ja" value="400" inputmode="numeric" aria-describedby="unit-speed-ja">
         <span id="unit-speed-ja">字/分</span>
       </label>
       <label class="setting-row">
         <span id="label-speed-en">読む速さ（英語）</span>
-        <input type="number" id="speed-en" value="200">
+        <input type="number" id="speed-en" value="200" inputmode="numeric" aria-describedby="unit-speed-en">
         <span id="unit-speed-en">語/分</span>
       </label>
-    </div>
+    </fieldset>
 
     <div id="premium-area" class="premium-area">
       <span id="premium-status" class="premium-status"></span>
