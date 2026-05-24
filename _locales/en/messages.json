@@ -69,13 +69,16 @@
     "message": "No readable text found"
   },
   "emptyStateHelp": {
-    "message": "Open this on a page with article text to estimate automatically. Switch the display language if needed."
+    "message": "No readable body text was detected on this page."
+  },
+  "emptyStateAction": {
+    "message": "Open an article, blog post, or another page with body text, then open this extension again."
   },
   "errorStateHelp": {
     "message": "Reload the page, then open the extension again."
   },
   "onboardingGuide": {
-    "message": "Automatically estimates the reading time for the page you are viewing."
+    "message": "Open this icon on an article page to show its reading time automatically."
   },
   "trialStatusOne": {
     "message": "Trial: $DAYS$ day remaining",

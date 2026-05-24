@@ -41,6 +41,10 @@ const resultStateHelpMessageKeys: Partial<Record<ResultState, string>> = {
   error: "errorStateHelp",
 };
 
+const resultStateActionMessageKeys: Partial<Record<ResultState, string>> = {
+  empty: "emptyStateAction",
+};
+
 const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
   ? "ja-JP"
   : "en-US";
@@ -85,6 +89,7 @@ function setResultState(state: ResultState) {
   const card = document.getElementById("result-card");
   const statusLabel = document.getElementById("status-label");
   const helpText = document.getElementById("result-help");
+  const actionText = document.getElementById("result-action");
 
   if (card) {
     card.classList.remove("is-loading", "is-ready", "is-empty", "is-error");
@@ -100,6 +105,12 @@ function setResultState(state: ResultState) {
     const helpMessageKey = resultStateHelpMessageKeys[state];
     helpText.innerText = helpMessageKey ? chrome.i18n.getMessage(helpMessageKey) : "";
     helpText.hidden = !helpMessageKey;
+  }
+
+  if (actionText) {
+    const actionMessageKey = resultStateActionMessageKeys[state];
+    actionText.innerText = actionMessageKey ? chrome.i18n.getMessage(actionMessageKey) : "";
+    actionText.hidden = !actionMessageKey;
   }
 }
 
