@@ -1,4 +1,9 @@
 import {
+  createDisplayNumberFormatter,
+  createRelativeDayFormatter,
+  resolveDisplayLocale,
+} from "./core/displayFormat";
+import {
   countTextStats,
   DEFAULT_READING_SPEEDS,
   estimateReadingMinutes,
@@ -56,13 +61,9 @@ const resultStateStatsMessageKeys: Partial<Record<ResultState, string>> = {
   loading: "loadingStats",
 };
 
-const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
-  ? "ja-JP"
-  : "en-US";
-const numberFormatter = new Intl.NumberFormat(uiLocale);
-const relativeDayFormatter = new Intl.RelativeTimeFormat(uiLocale, {
-  numeric: "always",
-});
+const uiLocale = resolveDisplayLocale(chrome.i18n.getUILanguage());
+const numberFormatter = createDisplayNumberFormatter(uiLocale);
+const relativeDayFormatter = createRelativeDayFormatter(uiLocale);
 
 function formatDisplayNumber(value: number): string {
   return numberFormatter.format(value);
@@ -98,8 +99,9 @@ function collectPageTextStats(): TextStats {
 
 function getTrialStatusMessage(trialRemainingDays: number): string {
   const days = Math.ceil(trialRemainingDays);
+  const messageKey = days === 1 ? "trialStatusOne" : "trialStatus";
 
-  return chrome.i18n.getMessage("trialStatus", [formatRelativeDaysFromNow(days)]);
+  return chrome.i18n.getMessage(messageKey, [formatRelativeDaysFromNow(days)]);
 }
 
 function setResultState(state: ResultState) {
