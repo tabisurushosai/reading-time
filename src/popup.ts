@@ -253,7 +253,7 @@ async function getTabCount() {
       func: collectPageTextStats,
     });
 
-    const result = results[0].result;
+    const result = results[0]?.result;
     if (result) {
       textStats = result;
     }

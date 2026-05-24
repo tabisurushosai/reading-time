@@ -1,14 +1,15 @@
+import { countTextStats } from "./core/reading";
+
 interface CountRequest {
   action: "getCount";
 }
 
+function isRecord(value: unknown): value is Record<PropertyKey, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function isCountRequest(request: unknown): request is CountRequest {
-  return (
-    typeof request === "object" &&
-    request !== null &&
-    "action" in request &&
-    request.action === "getCount"
-  );
+  return isRecord(request) && request.action === "getCount";
 }
 
 function getArticleText(): string {
@@ -20,15 +21,11 @@ function getArticleText(): string {
   return article ? article.innerText || "" : "";
 }
 
-function countCharacters(text: string): number {
-  return text.replace(/\s/g, "").length;
-}
-
 chrome.runtime.onMessage.addListener((request: unknown, _sender, sendResponse) => {
   if (isCountRequest(request)) {
     const text = getArticleText();
 
-    sendResponse({ count: countCharacters(text) });
+    sendResponse({ count: countTextStats(text).charCount });
   }
   return true;
 });
