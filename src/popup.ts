@@ -15,6 +15,8 @@ import {
 } from "./core/settings";
 import { chromeLocalStorageAdapter } from "./storage/chromeLocalStorage";
 
+type SpeedInputId = "speed-ja" | "speed-en";
+
 let textStats: TextStats = { charCount: 0, wordCount: 0 };
 let speeds: ReadingSpeeds = { ...DEFAULT_READING_SPEEDS };
 let currentTabId: number | undefined;
@@ -39,6 +41,34 @@ const numberFormatter = new Intl.NumberFormat(uiLocale);
 
 function formatDisplayNumber(value: number): string {
   return numberFormatter.format(value);
+}
+
+function getSpeedInput(id: SpeedInputId): HTMLInputElement {
+  const input = document.getElementById(id);
+
+  if (!(input instanceof HTMLInputElement)) {
+    throw new Error(`Missing speed input: ${id}`);
+  }
+
+  return input;
+}
+
+function parseSpeedInput(id: SpeedInputId, fallback: number): number {
+  return parseInt(getSpeedInput(id).value) || fallback;
+}
+
+function collectPageTextStats(): TextStats {
+  const article =
+    document.querySelector("article") ||
+    document.querySelector("main") ||
+    document.body;
+  const text = article ? article.innerText || "" : "";
+  const trimmedText = text.trim();
+
+  return {
+    charCount: text.replace(/\s/g, "").length,
+    wordCount: trimmedText ? trimmedText.split(/\s+/).length : 0,
+  };
 }
 
 function getTrialStatusMessage(trialRemainingDays: number): string {
@@ -85,8 +115,8 @@ async function loadSettings() {
 
   speeds = applySiteSpeeds(settings, siteSpeeds, currentDomain);
 
-  (document.getElementById("speed-ja") as HTMLInputElement).value = speeds.speedJa.toString();
-  (document.getElementById("speed-en") as HTMLInputElement).value = speeds.speedEn.toString();
+  getSpeedInput("speed-ja").value = speeds.speedJa.toString();
+  getSpeedInput("speed-en").value = speeds.speedEn.toString();
 
   localizeUI();
   updatePremiumUI();
@@ -138,8 +168,8 @@ function localizeUI() {
 
 async function saveSettings() {
   speeds = {
-    speedJa: parseInt((document.getElementById("speed-ja") as HTMLInputElement).value) || DEFAULT_READING_SPEEDS.speedJa,
-    speedEn: parseInt((document.getElementById("speed-en") as HTMLInputElement).value) || DEFAULT_READING_SPEEDS.speedEn,
+    speedJa: parseSpeedInput("speed-ja", DEFAULT_READING_SPEEDS.speedJa),
+    speedEn: parseSpeedInput("speed-en", DEFAULT_READING_SPEEDS.speedEn),
   };
 
   const now = Date.now();
@@ -170,21 +200,12 @@ async function getTabCount() {
   setResultState("loading");
 
   try {
-    const results = await chrome.scripting.executeScript({
+    const results = await chrome.scripting.executeScript<[], TextStats>({
       target: { tabId: tab.id },
-      func: () => {
-        const article =
-          document.querySelector("article") ||
-          document.querySelector("main") ||
-          document.body;
-        const text = article ? article.innerText || "" : "";
-        const charCount = text.replace(/\s/g, "").length;
-        const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
-        return { charCount, wordCount };
-      },
+      func: collectPageTextStats,
     });
 
-    const result = results[0].result as TextStats | undefined;
+    const result = results[0].result;
     if (result) {
       textStats = result;
     }
@@ -214,13 +235,12 @@ function updateDisplay() {
   if (!stats || !readingTime) return;
 
   const minutes = estimateReadingMinutes(textStats, lang, speeds);
+  readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
 
   if (lang === "ja") {
     stats.innerText = chrome.i18n.getMessage("charCount", [formatDisplayNumber(textStats.charCount)]);
-    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
   } else {
     stats.innerText = chrome.i18n.getMessage("wordCount", [formatDisplayNumber(textStats.wordCount)]);
-    readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
   }
   setResultState(minutes > 0 ? "ready" : "empty");
 
