@@ -1,9 +1,10 @@
-import { cp, copyFile } from "node:fs/promises";
+import { cp, copyFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type PluginOption } from "vite";
 
 const rootDir = dirname(fileURLToPath(import.meta.url));
+const extensionIconFiles = ["icon16.png", "icon48.png", "icon128.png"] as const;
 
 function copyExtensionAssets(): PluginOption {
   return {
@@ -11,10 +12,14 @@ function copyExtensionAssets(): PluginOption {
     apply: "build",
     async writeBundle() {
       const distDir = resolve(rootDir, "dist");
+      const distIconsDir = resolve(distDir, "icons");
 
+      await mkdir(distIconsDir, { recursive: true });
       await Promise.all([
         copyFile(resolve(rootDir, "manifest.json"), resolve(distDir, "manifest.json")),
-        cp(resolve(rootDir, "icons"), resolve(distDir, "icons"), { recursive: true }),
+        ...extensionIconFiles.map((iconFile) =>
+          copyFile(resolve(rootDir, "icons", iconFile), resolve(distIconsDir, iconFile)),
+        ),
         cp(resolve(rootDir, "_locales"), resolve(distDir, "_locales"), { recursive: true }),
       ]);
     },
