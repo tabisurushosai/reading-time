@@ -17,6 +17,7 @@ export const SETTINGS_STORAGE_KEYS = [
   "isPremium",
   "trialStartTs",
   "siteSpeeds",
+  "hasSeenOnboarding",
 ] as const satisfies readonly SettingsStorageKey[];
 
 export function normalizeSettingsStorageKeys(

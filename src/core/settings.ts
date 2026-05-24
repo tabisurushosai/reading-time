@@ -10,12 +10,14 @@ export interface StoredSettings extends Partial<ReadingSpeeds> {
   isPremium?: boolean;
   trialStartTs?: number;
   siteSpeeds?: SiteSpeeds;
+  hasSeenOnboarding?: boolean;
 }
 
 export interface EffectiveSettings extends ReadingSpeeds {
   isPremium: boolean;
   trialStartTs: number;
   siteSpeeds: SiteSpeeds;
+  hasSeenOnboarding: boolean;
 }
 
 function normalizeSpeed(value: unknown, fallback: number): number {
@@ -42,6 +44,7 @@ export function normalizeStoredSettings(
     isPremium: Boolean(stored.isPremium),
     trialStartTs: stored.trialStartTs || defaultTrialStartTs,
     siteSpeeds: normalizeSiteSpeeds(stored.siteSpeeds),
+    hasSeenOnboarding: Boolean(stored.hasSeenOnboarding),
   };
 }
 

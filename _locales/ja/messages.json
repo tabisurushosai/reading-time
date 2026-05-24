@@ -53,6 +53,9 @@
       }
     }
   },
+  "emptyReadingTimeResult": {
+    "message": "読める本文がありません"
+  },
   "errorOccurred": {
     "message": "ページを読み取れませんでした"
   },
@@ -64,6 +67,15 @@
   },
   "emptyStatus": {
     "message": "本文テキストが見つかりません"
+  },
+  "emptyStateHelp": {
+    "message": "記事本文のあるページで開くと自動で見積もります。必要なら表示言語を切り替えて確認してください。"
+  },
+  "errorStateHelp": {
+    "message": "ページを再読み込みしてから、もう一度拡張機能を開いてください。"
+  },
+  "onboardingGuide": {
+    "message": "今見ているページの読了時間を自動で見積もります。"
   },
   "trialStatusOne": {
     "message": "試用期間: 残り$DAYS$日",
