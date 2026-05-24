@@ -15,13 +15,20 @@ export type SettingsStorageSnapshot = Partial<SettingsStorageValues>;
 export type SettingsStoragePatch = SettingsStorageSnapshot;
 export type SettingsStorageValue<K extends SettingsStorageKey> = SettingsStorageValues[K];
 
-export interface SettingsStorageAdapter {
+export interface SettingsStorageReader {
   readAll(): Promise<SettingsStorageSnapshot>;
   read<K extends SettingsStorageKey>(
     key: K,
   ): Promise<SettingsStorageValue<K> | undefined>;
+}
+
+export interface SettingsStorageWriter {
   write(values: SettingsStoragePatch): Promise<void>;
 }
+
+export interface SettingsStorageAdapter
+  extends SettingsStorageReader,
+    SettingsStorageWriter {}
 
 export function listSettingsStorageKeys(): SettingsStorageKey[] {
   return [...SETTINGS_STORAGE_KEYS];
