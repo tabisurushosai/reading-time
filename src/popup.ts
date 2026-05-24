@@ -160,7 +160,7 @@ function updateOnboardingGuide(shouldShow: boolean) {
 }
 
 async function loadSettings() {
-  const storedSettings = await chromeLocalStorageAdapter.getAll();
+  const storedSettings = await chromeLocalStorageAdapter.readAll();
   const settings = normalizeStoredSettings(storedSettings, Date.now());
 
   isPremium = settings.isPremium;
@@ -169,7 +169,7 @@ async function loadSettings() {
   hasSeenOnboarding = settings.hasSeenOnboarding;
 
   if (!storedSettings.trialStartTs) {
-    await chromeLocalStorageAdapter.set({ trialStartTs });
+    await chromeLocalStorageAdapter.write({ trialStartTs });
   }
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -192,7 +192,7 @@ async function loadSettings() {
 
   if (!hasSeenOnboarding) {
     hasSeenOnboarding = true;
-    await chromeLocalStorageAdapter.set({ hasSeenOnboarding });
+    await chromeLocalStorageAdapter.write({ hasSeenOnboarding });
   }
 }
 
@@ -254,15 +254,15 @@ async function saveSettings() {
   const hasAccess = hasPremiumAccess(isPremium, trialStartTs, now);
 
   if (hasAccess && currentDomain) {
-    const result = await chromeLocalStorageAdapter.get(["siteSpeeds"]);
-    siteSpeeds = setDomainSpeeds(result.siteSpeeds || {}, currentDomain, speeds);
-    await chromeLocalStorageAdapter.set({
+    const storedSiteSpeeds = await chromeLocalStorageAdapter.read("siteSpeeds");
+    siteSpeeds = setDomainSpeeds(storedSiteSpeeds || {}, currentDomain, speeds);
+    await chromeLocalStorageAdapter.write({
       siteSpeeds,
       speedJa: speeds.speedJa,
       speedEn: speeds.speedEn,
     });
   } else {
-    await chromeLocalStorageAdapter.set({
+    await chromeLocalStorageAdapter.write({
       speedJa: speeds.speedJa,
       speedEn: speeds.speedEn,
     });
