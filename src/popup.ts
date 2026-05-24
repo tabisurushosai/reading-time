@@ -51,9 +51,16 @@ const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
   ? "ja-JP"
   : "en-US";
 const numberFormatter = new Intl.NumberFormat(uiLocale);
+const relativeDayFormatter = new Intl.RelativeTimeFormat(uiLocale, {
+  numeric: "always",
+});
 
 function formatDisplayNumber(value: number): string {
   return numberFormatter.format(value);
+}
+
+function formatRelativeDaysFromNow(days: number): string {
+  return relativeDayFormatter.format(days, "day");
 }
 
 function getSpeedInput(id: SpeedInputId): HTMLInputElement {
@@ -82,9 +89,8 @@ function collectPageTextStats(): TextStats {
 
 function getTrialStatusMessage(trialRemainingDays: number): string {
   const days = Math.ceil(trialRemainingDays);
-  const messageKey = days === 1 ? "trialStatusOne" : "trialStatus";
 
-  return chrome.i18n.getMessage(messageKey, [formatDisplayNumber(days)]);
+  return chrome.i18n.getMessage("trialStatus", [formatRelativeDaysFromNow(days)]);
 }
 
 function setResultState(state: ResultState) {

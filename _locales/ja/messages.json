@@ -12,7 +12,7 @@
     "message": "英語"
   },
   "languageLegend": {
-    "message": "表示言語"
+    "message": "本文の言語"
   },
   "settingsLegend": {
     "message": "読む速さ"
@@ -30,7 +30,7 @@
     "message": "語/分"
   },
   "charCount": {
-    "message": "文字数: $COUNT$字",
+    "message": "文字数：$COUNT$字",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -38,7 +38,7 @@
     }
   },
   "wordCount": {
-    "message": "単語数: $COUNT$語",
+    "message": "単語数：$COUNT$語",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -46,7 +46,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "読了目安: 約$MINUTES$分",
+    "message": "読了目安：約$MINUTES$分",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -54,7 +54,7 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "読める本文がありません"
+    "message": "読める本文が見つかりません"
   },
   "errorOccurred": {
     "message": "ページを読み取れませんでした"
@@ -69,7 +69,7 @@
     "message": "本文テキストを読み取り、現在の読む速さで計算しています。"
   },
   "readyStateHelp": {
-    "message": "検出した本文テキストと設定中の読む速さから算出しています。"
+    "message": "検出した本文テキストと現在の読む速さから算出しています。"
   },
   "emptyStatus": {
     "message": "本文テキストが見つかりません"
@@ -84,10 +84,10 @@
     "message": "ページを再読み込みしてから、もう一度拡張機能を開いてください。"
   },
   "onboardingGuide": {
-    "message": "記事ページでこのアイコンを開くと、読了時間を自動で表示します。"
+    "message": "記事ページでこの拡張機能を開くと、読了時間を自動で表示します。"
   },
   "trialStatusOne": {
-    "message": "試用期間: 残り$DAYS$日",
+    "message": "$DAYS$に試用期間が終了します",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -95,7 +95,7 @@
     }
   },
   "trialStatus": {
-    "message": "試用期間: 残り$DAYS$日",
+    "message": "$DAYS$に試用期間が終了します",
     "placeholders": {
       "days": {
         "content": "$1"

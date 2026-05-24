@@ -12,7 +12,7 @@
     "message": "English"
   },
   "languageLegend": {
-    "message": "Display language"
+    "message": "Text language"
   },
   "settingsLegend": {
     "message": "Reading speed"
@@ -46,7 +46,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "Estimated reading time: about $MINUTES$ min",
+    "message": "Estimated reading time: about $MINUTES$ min.",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -54,19 +54,19 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "No readable text yet"
+    "message": "No readable text found"
   },
   "errorOccurred": {
     "message": "Could not read this page"
   },
   "loadingStatus": {
-    "message": "Reading page"
+    "message": "Checking page"
   },
   "readyStatus": {
     "message": "Reading time calculated"
   },
   "loadingStateHelp": {
-    "message": "Reading body text and calculating with your current speed."
+    "message": "Reading the body text and calculating with your current speed."
   },
   "readyStateHelp": {
     "message": "Calculated from the detected body text and your current reading speed."
@@ -84,10 +84,10 @@
     "message": "Reload the page, then open the extension again."
   },
   "onboardingGuide": {
-    "message": "Open this icon on an article page to show its reading time automatically."
+    "message": "Open this extension on an article page to show its reading time automatically."
   },
   "trialStatusOne": {
-    "message": "Trial: $DAYS$ day remaining",
+    "message": "Trial ends $DAYS$",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -95,7 +95,7 @@
     }
   },
   "trialStatus": {
-    "message": "Trial: $DAYS$ days remaining",
+    "message": "Trial ends $DAYS$",
     "placeholders": {
       "days": {
         "content": "$1"
