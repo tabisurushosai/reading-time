@@ -3,7 +3,7 @@
     "message": "Reading Time"
   },
   "extDesc": {
-    "message": "Estimates how long it will take to read the current page."
+    "message": "Shows an estimated reading time for the current page."
   },
   "langJa": {
     "message": "Japanese"
@@ -18,10 +18,10 @@
     "message": "Reading speed"
   },
   "speedJaLabel": {
-    "message": "Reading speed (Japanese)"
+    "message": "Japanese reading speed"
   },
   "speedEnLabel": {
-    "message": "Reading speed (English)"
+    "message": "English reading speed"
   },
   "unitCharsPerMin": {
     "message": "chars/min"
@@ -46,7 +46,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "Estimated reading time: about $MINUTES$ min.",
+    "message": "Estimated reading time: about $MINUTES$ min",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -54,37 +54,37 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "No readable text found"
+    "message": "No body text found"
   },
   "loadingReadingTimeResult": {
-    "message": "Calculating"
+    "message": "Calculating..."
   },
   "errorReadingTimeResult": {
-    "message": "Cannot display estimate"
+    "message": "Unable to show an estimate"
   },
   "errorOccurred": {
-    "message": "Could not read this page"
+    "message": "Unable to read this page"
   },
   "loadingStatus": {
-    "message": "Checking page"
+    "message": "Reading page text"
   },
   "loadingStats": {
-    "message": "Checking body text"
+    "message": "Checking body text..."
   },
   "readyStatus": {
     "message": "Reading time calculated"
   },
   "loadingStateHelp": {
-    "message": "Reading the body text and calculating with your current speed."
+    "message": "Reading the body text and calculating the estimate with your current speed."
   },
   "readyStateHelp": {
     "message": "Calculated from the detected body text and your current reading speed."
   },
   "emptyStatus": {
-    "message": "No readable text found"
+    "message": "No body text found"
   },
   "emptyStateHelp": {
-    "message": "No text that can be used to calculate an article reading time was detected on this page."
+    "message": "No body text suitable for calculating article reading time was detected on this page."
   },
   "emptyStateAction": {
     "message": "Go to an article, blog post, or another page where the body text is visible, then open this extension again."

@@ -3,7 +3,7 @@
     "message": "よむ時間めやす"
   },
   "extDesc": {
-    "message": "今のページを読むのにかかる時間の目安を表示。長文の見通しに。"
+    "message": "今のページの読了時間の目安を表示します。長文を読む前の見通しに。"
   },
   "langJa": {
     "message": "日本語"
@@ -18,10 +18,10 @@
     "message": "読む速さ"
   },
   "speedJaLabel": {
-    "message": "読む速さ（日本語）"
+    "message": "日本語の読む速さ"
   },
   "speedEnLabel": {
-    "message": "読む速さ（英語）"
+    "message": "英語の読む速さ"
   },
   "unitCharsPerMin": {
     "message": "字/分"
@@ -46,7 +46,7 @@
     }
   },
   "readingTimeResult": {
-    "message": "読了目安：約$MINUTES$分",
+    "message": "読了時間の目安：約$MINUTES$分",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -54,37 +54,37 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "読める本文が見つかりません"
+    "message": "本文が見つかりません"
   },
   "loadingReadingTimeResult": {
-    "message": "計算しています"
+    "message": "計算中です"
   },
   "errorReadingTimeResult": {
-    "message": "表示できません"
+    "message": "読了時間を表示できません"
   },
   "errorOccurred": {
     "message": "ページを読み取れませんでした"
   },
   "loadingStatus": {
-    "message": "読み取り中"
+    "message": "本文を読み取り中"
   },
   "loadingStats": {
-    "message": "本文テキストを確認中"
+    "message": "本文テキストを確認しています"
   },
   "readyStatus": {
     "message": "読了時間を計算しました"
   },
   "loadingStateHelp": {
-    "message": "本文テキストを読み取り、現在の読む速さで計算しています。"
+    "message": "本文テキストを読み取り、現在の読む速さで読了時間を計算しています。"
   },
   "readyStateHelp": {
-    "message": "検出した本文テキストと現在の読む速さから算出しています。"
+    "message": "検出した本文テキストと現在の読む速さをもとに算出しています。"
   },
   "emptyStatus": {
-    "message": "本文テキストが見つかりません"
+    "message": "本文が見つかりません"
   },
   "emptyStateHelp": {
-    "message": "このページでは、記事本文として読了時間を計算できるテキストを検出できませんでした。"
+    "message": "このページでは、読了時間を計算できる本文テキストを検出できませんでした。"
   },
   "emptyStateAction": {
     "message": "記事・ブログなど本文が表示されているページへ移動し、この拡張機能をもう一度開いてください。"
@@ -93,10 +93,10 @@
     "message": "ページを再読み込みしてから、もう一度拡張機能を開いてください。"
   },
   "onboardingGuide": {
-    "message": "まず記事ページで開いてください。読了時間が出たら、下の言語と読む速さで調整できます。"
+    "message": "記事ページで開くと読了時間を表示します。表示後は下の言語と読む速さで調整できます。"
   },
   "trialStatusOne": {
-    "message": "$DAYS$に試用期間が終了します",
+    "message": "試用期間は$DAYS$に終了します",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -104,7 +104,7 @@
     }
   },
   "trialStatus": {
-    "message": "$DAYS$に試用期間が終了します",
+    "message": "試用期間は$DAYS$に終了します",
     "placeholders": {
       "days": {
         "content": "$1"
