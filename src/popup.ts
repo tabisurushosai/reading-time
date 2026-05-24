@@ -158,7 +158,7 @@ function updateOnboardingGuide(shouldShow: boolean) {
 }
 
 async function loadSettings() {
-  const storedSettings = await chromeLocalStorageAdapter.get();
+  const storedSettings = await chromeLocalStorageAdapter.getAll();
   const settings = normalizeStoredSettings(storedSettings, Date.now());
 
   isPremium = settings.isPremium;
@@ -252,7 +252,7 @@ async function saveSettings() {
   const hasAccess = hasPremiumAccess(isPremium, trialStartTs, now);
 
   if (hasAccess && currentDomain) {
-    const result = await chromeLocalStorageAdapter.get("siteSpeeds");
+    const result = await chromeLocalStorageAdapter.get(["siteSpeeds"]);
     siteSpeeds = setDomainSpeeds(result.siteSpeeds || {}, currentDomain, speeds);
     await chromeLocalStorageAdapter.set({
       siteSpeeds,
