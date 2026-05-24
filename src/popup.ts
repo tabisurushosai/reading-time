@@ -37,6 +37,8 @@ const resultStateMessageKeys: Record<ResultState, string> = {
 };
 
 const resultStateHelpMessageKeys: Partial<Record<ResultState, string>> = {
+  loading: "loadingStateHelp",
+  ready: "readyStateHelp",
   empty: "emptyStateHelp",
   error: "errorStateHelp",
 };

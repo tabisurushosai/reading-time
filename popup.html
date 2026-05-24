@@ -6,10 +6,11 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f8fafc;
+      --bg: #eef2f7;
       --surface: #ffffff;
-      --surface-muted: #f1f5f9;
+      --surface-muted: #f8fafc;
       --border: #cbd5e1;
+      --border-soft: #e2e8f0;
       --control-border: #64748b;
       --text: #0f172a;
       --muted: #475569;
@@ -23,7 +24,7 @@
       --warning-soft: #fef3c7;
       --error: #b91c1c;
       --error-soft: #fee2e2;
-      --shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
     }
 
     * {
@@ -31,9 +32,9 @@
     }
 
     body {
-      width: 340px;
+      width: 360px;
       margin: 0;
-      padding: 16px;
+      padding: 18px;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -43,7 +44,7 @@
 
     .popup-shell {
       display: grid;
-      gap: 14px;
+      gap: 16px;
     }
 
     .header {
@@ -51,12 +52,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 0 2px;
+      padding: 0 4px;
     }
 
     h1 {
       margin: 0;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
       line-height: 1.3;
       letter-spacing: -0.02em;
@@ -71,8 +72,8 @@
 
     .result-card {
       display: grid;
-      gap: 8px;
-      padding: 16px;
+      gap: 10px;
+      padding: 18px;
       border-left: 4px solid var(--accent);
     }
 
@@ -135,10 +136,16 @@
     .result {
       min-height: 40px;
       color: var(--text);
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
       line-height: 1.2;
       letter-spacing: -0.03em;
+    }
+
+    .result-card.is-loading .result,
+    .result-card.is-empty .result,
+    .result-card.is-error .result {
+      color: var(--muted);
     }
 
     .stats {
@@ -176,13 +183,13 @@
 
     .controls,
     .settings {
-      padding: 14px;
+      padding: 16px;
     }
 
     .controls {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      gap: 10px;
       border: 1px solid var(--border);
     }
 
@@ -199,7 +206,7 @@
       padding: 10px 12px;
       border: 1px solid var(--control-border);
       border-radius: 10px;
-      background: var(--surface-muted);
+      background: var(--surface);
       color: var(--text);
       cursor: pointer;
       font-weight: 600;
@@ -233,7 +240,7 @@
 
     .settings {
       display: grid;
-      gap: 12px;
+      gap: 14px;
       border: 1px solid var(--border);
     }
 
@@ -245,29 +252,48 @@
     .control-group legend {
       margin-bottom: 8px;
       padding: 0;
-      color: var(--muted);
-      font-size: 12px;
+      color: #334155;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.01em;
     }
 
     .setting-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 88px auto;
-      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
       align-items: center;
       min-height: 48px;
-      padding: 2px 0;
+      padding: 8px 0;
+      border-top: 1px solid var(--border-soft);
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
     }
 
-    .setting-row + .setting-row {
-      margin-top: 10px;
+    .setting-row:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .setting-row:last-of-type {
+      padding-bottom: 0;
+    }
+
+    .setting-label {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .setting-control {
+      display: inline-grid;
+      grid-template-columns: 92px auto;
+      gap: 6px;
+      align-items: center;
+      white-space: nowrap;
     }
 
     .setting-row input {
-      width: 88px;
+      width: 92px;
       min-height: 48px;
       border: 1px solid var(--control-border);
       border-radius: 8px;
@@ -281,9 +307,9 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       padding: 12px;
-      background: var(--surface);
+      background: var(--surface-muted);
       border: 1px solid var(--border);
       border-radius: 12px;
     }
@@ -315,6 +341,11 @@
       cursor: pointer;
       touch-action: manipulation;
     }
+
+    button:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
   </style>
 </head>
 <body>
@@ -342,14 +373,18 @@
     <fieldset class="card settings control-group">
       <legend id="settings-legend">読む速さ</legend>
       <label class="setting-row">
-        <span id="label-speed-ja">読む速さ（日本語）</span>
-        <input type="number" id="speed-ja" value="400" inputmode="numeric" aria-describedby="unit-speed-ja">
-        <span id="unit-speed-ja">字/分</span>
+        <span id="label-speed-ja" class="setting-label">読む速さ（日本語）</span>
+        <span class="setting-control">
+          <input type="number" id="speed-ja" value="400" inputmode="numeric" aria-describedby="unit-speed-ja">
+          <span id="unit-speed-ja">字/分</span>
+        </span>
       </label>
       <label class="setting-row">
-        <span id="label-speed-en">読む速さ（英語）</span>
-        <input type="number" id="speed-en" value="200" inputmode="numeric" aria-describedby="unit-speed-en">
-        <span id="unit-speed-en">語/分</span>
+        <span id="label-speed-en" class="setting-label">読む速さ（英語）</span>
+        <span class="setting-control">
+          <input type="number" id="speed-en" value="200" inputmode="numeric" aria-describedby="unit-speed-en">
+          <span id="unit-speed-en">語/分</span>
+        </span>
       </label>
     </fieldset>
 

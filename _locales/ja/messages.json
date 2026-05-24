@@ -65,6 +65,12 @@
   "readyStatus": {
     "message": "読了時間を計算しました"
   },
+  "loadingStateHelp": {
+    "message": "本文テキストを読み取り、現在の読む速さで計算しています。"
+  },
+  "readyStateHelp": {
+    "message": "検出した本文テキストと設定中の読む速さから算出しています。"
+  },
   "emptyStatus": {
     "message": "本文テキストが見つかりません"
   },
