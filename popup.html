@@ -6,26 +6,32 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f6f8fb;
+      --bg: #f4f7fb;
       --surface: #ffffff;
       --surface-muted: #f8fafc;
+      --surface-raised: #ffffff;
       --border: #cbd5e1;
       --border-soft: #e2e8f0;
       --control-border: #64748b;
       --text: #0f172a;
       --muted: #475569;
+      --muted-strong: #334155;
       --accent: #2563eb;
       --accent-text: #1d4ed8;
       --accent-soft: #dbeafe;
+      --accent-border: #93c5fd;
       --focus: #1d4ed8;
       --focus-shadow: rgba(37, 99, 235, 0.20);
       --success: #15803d;
       --success-soft: #dcfce7;
+      --success-border: #86efac;
       --warning: #92400e;
       --warning-soft: #fef3c7;
+      --warning-border: #fbbf24;
       --error: #b91c1c;
       --error-soft: #fee2e2;
-      --shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      --error-border: #fca5a5;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
     }
 
     * {
@@ -33,9 +39,9 @@
     }
 
     body {
-      width: 368px;
+      width: 380px;
       margin: 0;
-      padding: 16px;
+      padding: 18px;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -45,18 +51,18 @@
 
     .popup-shell {
       display: grid;
-      gap: 16px;
+      gap: 14px;
     }
 
     .header {
       display: grid;
-      gap: 4px;
+      gap: 6px;
       padding: 2px 4px 0;
     }
 
     h1 {
       margin: 0;
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 700;
       line-height: 1.3;
       letter-spacing: -0.02em;
@@ -65,7 +71,7 @@
     .app-subtitle {
       margin: 0;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 12.5px;
       line-height: 1.45;
     }
 
@@ -77,30 +83,56 @@
     }
 
     .result-card {
+      position: relative;
       display: grid;
-      gap: 12px;
+      gap: 10px;
+      overflow: hidden;
       padding: 18px 18px 20px;
-      border-left: 5px solid var(--accent);
+      border-color: var(--accent-border);
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: var(--accent);
     }
 
     .result-card.is-loading {
-      border-left-color: var(--muted);
+      border-color: var(--border);
       background: linear-gradient(180deg, var(--surface-muted), var(--surface));
     }
 
+    .result-card.is-loading::before {
+      background: var(--muted);
+    }
+
     .result-card.is-ready {
-      border-left-color: var(--success);
+      border-color: var(--success-border);
       background: linear-gradient(180deg, #f0fdf4, var(--surface) 54%);
     }
 
+    .result-card.is-ready::before {
+      background: var(--success);
+    }
+
     .result-card.is-empty {
-      border-left-color: var(--warning);
+      border-color: var(--warning-border);
       background: linear-gradient(180deg, #fffbeb, var(--surface) 54%);
     }
 
+    .result-card.is-empty::before {
+      background: var(--warning);
+    }
+
     .result-card.is-error {
-      border-left-color: var(--error);
+      border-color: var(--error-border);
       background: linear-gradient(180deg, #fef2f2, var(--surface) 54%);
+    }
+
+    .result-card.is-error::before {
+      background: var(--error);
     }
 
     .status-label,
@@ -113,9 +145,16 @@
       font-size: 12px;
     }
 
+    .result-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .status-label {
       display: inline-flex;
       align-items: center;
+      gap: 6px;
       width: fit-content;
       min-height: 24px;
       padding: 3px 9px;
@@ -124,6 +163,14 @@
       color: var(--accent-text);
       font-weight: 700;
       letter-spacing: 0.02em;
+    }
+
+    .status-label::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
     }
 
     .result-card.is-loading .status-label {
@@ -146,10 +193,35 @@
       color: var(--error);
     }
 
+    .result-body {
+      display: grid;
+      gap: 6px;
+      min-height: 86px;
+      align-content: center;
+      padding: 14px;
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .result-card.is-ready .result-body {
+      border-color: var(--success-border);
+      background: rgba(240, 253, 244, 0.74);
+    }
+
+    .result-card.is-empty .result-body {
+      border-color: var(--warning-border);
+      background: rgba(255, 251, 235, 0.78);
+    }
+
+    .result-card.is-error .result-body {
+      border-color: var(--error-border);
+      background: rgba(254, 242, 242, 0.78);
+    }
+
     .result {
-      min-height: 42px;
       color: var(--text);
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.03em;
@@ -167,6 +239,7 @@
     .stats {
       font-size: 13px;
       font-weight: 600;
+      line-height: 1.45;
     }
 
     .help-text,
@@ -176,13 +249,13 @@
     }
 
     .help-text {
-      color: #334155;
+      color: var(--muted-strong);
       line-height: 1.6;
     }
 
     .state-action {
       padding: 8px 10px;
-      border: 1px solid #f59e0b;
+      border: 1px solid var(--warning-border);
       border-radius: 10px;
       background: var(--warning-soft);
       color: var(--warning);
@@ -192,7 +265,7 @@
 
     .onboarding-guide {
       padding: 10px 12px;
-      border: 1px solid #bfdbfe;
+      border: 1px solid var(--accent-border);
       border-radius: 12px;
       background: #eff6ff;
       color: #1e3a8a;
@@ -201,14 +274,13 @@
 
     .controls,
     .settings {
-      padding: 16px;
+      padding: 15px;
     }
 
     .controls {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      border: 1px solid var(--border);
     }
 
     .controls legend {
@@ -224,7 +296,7 @@
       padding: 10px 12px;
       border: 1px solid var(--control-border);
       border-radius: 10px;
-      background: #ffffff;
+      background: var(--surface-raised);
       color: var(--text);
       cursor: pointer;
       font-weight: 600;
@@ -239,6 +311,7 @@
       border-color: var(--accent);
       background: var(--accent-soft);
       color: #1e3a8a;
+      box-shadow: inset 0 0 0 1px var(--accent);
     }
 
     .choice:has(input:focus-visible),
@@ -264,7 +337,6 @@
     .settings {
       display: grid;
       gap: 14px;
-      border: 1px solid var(--border);
     }
 
     .control-group {
@@ -275,7 +347,7 @@
     .control-group legend {
       margin-bottom: 8px;
       padding: 0;
-      color: #334155;
+      color: var(--muted-strong);
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.01em;
@@ -283,7 +355,7 @@
 
     .setting-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) minmax(132px, auto);
       gap: 10px;
       align-items: center;
       min-height: 52px;
@@ -309,14 +381,14 @@
 
     .setting-control {
       display: inline-grid;
-      grid-template-columns: 92px auto;
-      gap: 6px;
+      grid-template-columns: 88px auto;
+      gap: 8px;
       align-items: center;
       white-space: nowrap;
     }
 
     .setting-row input {
-      width: 92px;
+      width: 88px;
       min-height: 52px;
       border: 1px solid var(--control-border);
       border-radius: 8px;
@@ -333,13 +405,15 @@
       align-items: center;
       gap: 10px;
       padding: 12px;
-      background: var(--surface-muted);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
     }
 
     .premium-status {
       font-weight: 700;
+      line-height: 1.4;
     }
 
     .premium-status--premium,
@@ -382,9 +456,13 @@
     <p id="onboarding-guide" class="onboarding-guide" hidden>まず記事ページで開いてください。読了時間が出たら、下の言語と読む速さで調整できます。</p>
 
     <section id="result-card" class="card result-card is-loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-labelledby="status-label" aria-describedby="stats result-help result-action">
-      <div id="status-label" class="status-label">読み取り中</div>
-      <div id="reading-time" class="result">…</div>
-      <div id="stats" class="stats">…</div>
+      <div class="result-heading">
+        <div id="status-label" class="status-label">読み取り中</div>
+      </div>
+      <div class="result-body">
+        <div id="reading-time" class="result">…</div>
+        <div id="stats" class="stats">…</div>
+      </div>
       <p id="result-help" class="help-text" hidden></p>
       <p id="result-action" class="state-action" hidden></p>
     </section>
