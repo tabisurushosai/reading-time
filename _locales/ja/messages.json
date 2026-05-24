@@ -56,11 +56,20 @@
   "emptyReadingTimeResult": {
     "message": "読める本文が見つかりません"
   },
+  "loadingReadingTimeResult": {
+    "message": "計算しています"
+  },
+  "errorReadingTimeResult": {
+    "message": "表示できません"
+  },
   "errorOccurred": {
     "message": "ページを読み取れませんでした"
   },
   "loadingStatus": {
     "message": "読み取り中"
+  },
+  "loadingStats": {
+    "message": "本文テキストを確認中"
   },
   "readyStatus": {
     "message": "読了時間を計算しました"

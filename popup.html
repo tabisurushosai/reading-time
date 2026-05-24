@@ -6,7 +6,7 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #eef2f7;
+      --bg: #f6f8fb;
       --surface: #ffffff;
       --surface-muted: #f8fafc;
       --border: #cbd5e1;
@@ -25,7 +25,7 @@
       --warning-soft: #fef3c7;
       --error: #b91c1c;
       --error-soft: #fee2e2;
-      --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+      --shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
     }
 
     * {
@@ -33,9 +33,9 @@
     }
 
     body {
-      width: 360px;
+      width: 368px;
       margin: 0;
-      padding: 18px;
+      padding: 16px;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -49,11 +49,9 @@
     }
 
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 4px;
+      display: grid;
+      gap: 4px;
+      padding: 2px 4px 0;
     }
 
     h1 {
@@ -62,6 +60,13 @@
       font-weight: 700;
       line-height: 1.3;
       letter-spacing: -0.02em;
+    }
+
+    .app-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .card {
@@ -73,25 +78,29 @@
 
     .result-card {
       display: grid;
-      gap: 10px;
-      padding: 18px;
-      border-left: 4px solid var(--accent);
+      gap: 12px;
+      padding: 18px 18px 20px;
+      border-left: 5px solid var(--accent);
     }
 
     .result-card.is-loading {
       border-left-color: var(--muted);
+      background: linear-gradient(180deg, var(--surface-muted), var(--surface));
     }
 
     .result-card.is-ready {
       border-left-color: var(--success);
+      background: linear-gradient(180deg, #f0fdf4, var(--surface) 54%);
     }
 
     .result-card.is-empty {
       border-left-color: var(--warning);
+      background: linear-gradient(180deg, #fffbeb, var(--surface) 54%);
     }
 
     .result-card.is-error {
       border-left-color: var(--error);
+      background: linear-gradient(180deg, #fef2f2, var(--surface) 54%);
     }
 
     .status-label,
@@ -105,8 +114,11 @@
     }
 
     .status-label {
+      display: inline-flex;
+      align-items: center;
       width: fit-content;
-      padding: 3px 8px;
+      min-height: 24px;
+      padding: 3px 9px;
       border-radius: 999px;
       background: var(--accent-soft);
       color: var(--accent-text);
@@ -135,18 +147,21 @@
     }
 
     .result {
-      min-height: 40px;
+      min-height: 42px;
       color: var(--text);
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.15;
       letter-spacing: -0.03em;
+      overflow-wrap: anywhere;
     }
 
     .result-card.is-loading .result,
     .result-card.is-empty .result,
     .result-card.is-error .result {
       color: var(--muted);
+      font-size: 20px;
+      letter-spacing: -0.01em;
     }
 
     .stats {
@@ -161,11 +176,13 @@
     }
 
     .help-text {
+      color: #334155;
       line-height: 1.6;
     }
 
     .state-action {
       padding: 8px 10px;
+      border: 1px solid #f59e0b;
       border-radius: 10px;
       background: var(--warning-soft);
       color: var(--warning);
@@ -207,10 +224,15 @@
       padding: 10px 12px;
       border: 1px solid var(--control-border);
       border-radius: 10px;
-      background: var(--surface);
+      background: #ffffff;
       color: var(--text);
       cursor: pointer;
       font-weight: 600;
+    }
+
+    .choice:hover {
+      border-color: var(--accent);
+      background: #f8fbff;
     }
 
     .choice:has(input:checked) {
@@ -299,6 +321,7 @@
       border: 1px solid var(--control-border);
       border-radius: 8px;
       padding: 8px 10px;
+      background: #ffffff;
       color: var(--text);
       font: inherit;
       text-align: right;
@@ -353,6 +376,7 @@
   <main id="app" class="popup-shell" aria-labelledby="app-title">
     <header class="header">
       <h1 id="app-title">よむ時間めやす</h1>
+      <p id="app-subtitle" class="app-subtitle">今のページを読むのにかかる時間の目安を表示。長文の見通しに。</p>
     </header>
 
     <p id="onboarding-guide" class="onboarding-guide" hidden>まず記事ページで開いてください。読了時間が出たら、下の言語と読む速さで調整できます。</p>
