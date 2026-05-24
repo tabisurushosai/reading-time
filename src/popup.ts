@@ -25,6 +25,7 @@ let currentDomain: string | undefined;
 let isPremium = false;
 let trialStartTs = 0;
 let siteSpeeds: SiteSpeeds = {};
+let hasSeenOnboarding = false;
 
 type ResultState = "loading" | "ready" | "empty" | "error";
 
@@ -33,6 +34,11 @@ const resultStateMessageKeys: Record<ResultState, string> = {
   ready: "readyStatus",
   empty: "emptyStatus",
   error: "errorOccurred",
+};
+
+const resultStateHelpMessageKeys: Partial<Record<ResultState, string>> = {
+  empty: "emptyStateHelp",
+  error: "errorStateHelp",
 };
 
 const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
@@ -78,6 +84,7 @@ function getTrialStatusMessage(trialRemainingDays: number): string {
 function setResultState(state: ResultState) {
   const card = document.getElementById("result-card");
   const statusLabel = document.getElementById("status-label");
+  const helpText = document.getElementById("result-help");
 
   if (card) {
     card.classList.remove("is-loading", "is-ready", "is-empty", "is-error");
@@ -88,6 +95,20 @@ function setResultState(state: ResultState) {
   if (statusLabel) {
     statusLabel.innerText = chrome.i18n.getMessage(resultStateMessageKeys[state]);
   }
+
+  if (helpText) {
+    const helpMessageKey = resultStateHelpMessageKeys[state];
+    helpText.innerText = helpMessageKey ? chrome.i18n.getMessage(helpMessageKey) : "";
+    helpText.hidden = !helpMessageKey;
+  }
+}
+
+function updateOnboardingGuide(shouldShow: boolean) {
+  const guide = document.getElementById("onboarding-guide");
+
+  if (!guide) return;
+
+  guide.hidden = !shouldShow;
 }
 
 async function loadSettings() {
@@ -97,6 +118,7 @@ async function loadSettings() {
   isPremium = settings.isPremium;
   trialStartTs = settings.trialStartTs;
   siteSpeeds = settings.siteSpeeds;
+  hasSeenOnboarding = settings.hasSeenOnboarding;
 
   if (!storedSettings.trialStartTs) {
     await chromeLocalStorageAdapter.set({ trialStartTs });
@@ -118,6 +140,12 @@ async function loadSettings() {
 
   localizeUI();
   updatePremiumUI();
+  updateOnboardingGuide(!hasSeenOnboarding);
+
+  if (!hasSeenOnboarding) {
+    hasSeenOnboarding = true;
+    await chromeLocalStorageAdapter.set({ hasSeenOnboarding });
+  }
 }
 
 function updatePremiumUI() {
@@ -156,6 +184,7 @@ function localizeUI() {
     "unit-speed-ja": "unitCharsPerMin",
     "unit-speed-en": "unitWordsPerMin",
     "upgrade-btn": "upgradeButton",
+    "onboarding-guide": "onboardingGuide",
   };
 
   for (const [id, key] of Object.entries(elements)) {
@@ -235,7 +264,9 @@ function updateDisplay() {
   if (!stats || !readingTime) return;
 
   const minutes = estimateReadingMinutes(textStats, lang, speeds);
-  readingTime.innerText = chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)]);
+  readingTime.innerText = minutes > 0
+    ? chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)])
+    : chrome.i18n.getMessage("emptyReadingTimeResult");
 
   if (lang === "ja") {
     stats.innerText = chrome.i18n.getMessage("charCount", [formatDisplayNumber(textStats.charCount)]);

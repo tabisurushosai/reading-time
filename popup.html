@@ -82,6 +82,8 @@
 
     .status-label,
     .stats,
+    .help-text,
+    .onboarding-guide,
     .premium-area {
       color: var(--muted);
       font-size: 12px;
@@ -100,6 +102,19 @@
       font-weight: 800;
       line-height: 1.25;
       letter-spacing: -0.03em;
+    }
+
+    .help-text,
+    .onboarding-guide {
+      margin: 0;
+    }
+
+    .onboarding-guide {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      font-weight: 600;
     }
 
     .controls,
@@ -232,10 +247,13 @@
       <h1 id="app-title">よむ時間めやす</h1>
     </header>
 
-    <section id="result-card" class="card result-card is-loading" aria-live="polite" aria-atomic="true" aria-busy="true" aria-labelledby="status-label" aria-describedby="stats">
+    <p id="onboarding-guide" class="onboarding-guide" hidden>今見ているページの読了時間を自動で見積もります。</p>
+
+    <section id="result-card" class="card result-card is-loading" aria-live="polite" aria-atomic="true" aria-busy="true" aria-labelledby="status-label" aria-describedby="stats result-help">
       <div id="status-label" class="status-label">読み込み中</div>
       <div id="reading-time" class="result">…</div>
       <div id="stats" class="stats">…</div>
+      <p id="result-help" class="help-text" hidden></p>
     </section>
 
     <fieldset class="card controls control-group">

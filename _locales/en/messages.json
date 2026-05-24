@@ -53,6 +53,9 @@
       }
     }
   },
+  "emptyReadingTimeResult": {
+    "message": "No readable text yet"
+  },
   "errorOccurred": {
     "message": "Could not read this page"
   },
@@ -64,6 +67,15 @@
   },
   "emptyStatus": {
     "message": "No readable text found"
+  },
+  "emptyStateHelp": {
+    "message": "Open this on a page with article text to estimate automatically. Switch the display language if needed."
+  },
+  "errorStateHelp": {
+    "message": "Reload the page, then open the extension again."
+  },
+  "onboardingGuide": {
+    "message": "Automatically estimates the reading time for the page you are viewing."
   },
   "trialStatusOne": {
     "message": "Trial: $DAYS$ day remaining",
