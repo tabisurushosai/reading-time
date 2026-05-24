@@ -11,6 +11,12 @@
   "langEn": {
     "message": "English"
   },
+  "languageLegend": {
+    "message": "Display language"
+  },
+  "settingsLegend": {
+    "message": "Reading speed"
+  },
   "speedJaLabel": {
     "message": "Reading speed (Japanese)"
   },
