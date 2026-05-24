@@ -20,18 +20,50 @@ export interface EffectiveSettings extends ReadingSpeeds {
   hasSeenOnboarding: boolean;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isValidSpeed(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value !== 0;
+}
+
 function normalizeSpeed(value: unknown, fallback: number): number {
-  return typeof value === "number" && Number.isFinite(value) && value !== 0
-    ? value
-    : fallback;
+  return isValidSpeed(value) ? value : fallback;
+}
+
+function normalizeOptionalSpeed(value: unknown): number | undefined {
+  return isValidSpeed(value) ? value : undefined;
 }
 
 function normalizeSiteSpeeds(value: unknown): SiteSpeeds {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
+  if (!isRecord(value)) {
     return {};
   }
 
-  return value as SiteSpeeds;
+  const normalized: SiteSpeeds = {};
+
+  for (const [domain, rawSpeeds] of Object.entries(value)) {
+    if (!isRecord(rawSpeeds)) {
+      continue;
+    }
+
+    const domainSpeeds: Partial<ReadingSpeeds> = {};
+    const speedJa = normalizeOptionalSpeed(rawSpeeds["speedJa"]);
+    const speedEn = normalizeOptionalSpeed(rawSpeeds["speedEn"]);
+
+    if (speedJa !== undefined) {
+      domainSpeeds.speedJa = speedJa;
+    }
+
+    if (speedEn !== undefined) {
+      domainSpeeds.speedEn = speedEn;
+    }
+
+    normalized[domain] = domainSpeeds;
+  }
+
+  return normalized;
 }
 
 export function normalizeStoredSettings(

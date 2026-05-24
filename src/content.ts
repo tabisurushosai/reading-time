@@ -9,7 +9,7 @@ function isRecord(value: unknown): value is Record<PropertyKey, unknown> {
 }
 
 function isCountRequest(request: unknown): request is CountRequest {
-  return isRecord(request) && request.action === "getCount";
+  return isRecord(request) && request["action"] === "getCount";
 }
 
 function getArticleText(): string {
