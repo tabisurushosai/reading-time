@@ -1,17 +1,23 @@
 import {
-  SETTINGS_STORAGE_KEYS,
-  resolveSettingsStorageKeys,
+  listSettingsStorageKeys,
   type SettingsStorageAdapter,
+  type SettingsStorageKey,
+  type SettingsStorageSnapshot,
+  type SettingsStorageValue,
 } from "./settingsStorage";
 
 export const chromeLocalStorageAdapter: SettingsStorageAdapter = {
-  async getAll() {
-    return chrome.storage.local.get(resolveSettingsStorageKeys(SETTINGS_STORAGE_KEYS));
+  async readAll() {
+    return chrome.storage.local.get(listSettingsStorageKeys());
   },
-  async get(keys) {
-    return chrome.storage.local.get(resolveSettingsStorageKeys(keys));
+  async read<K extends SettingsStorageKey>(
+    key: K,
+  ): Promise<SettingsStorageValue<K> | undefined> {
+    const values = (await chrome.storage.local.get(key)) as SettingsStorageSnapshot;
+
+    return values[key] as SettingsStorageValue<K> | undefined;
   },
-  async set(values) {
+  async write(values) {
     await chrome.storage.local.set(values);
   },
 };

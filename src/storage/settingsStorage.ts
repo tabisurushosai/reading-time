@@ -10,17 +10,19 @@ export const SETTINGS_STORAGE_KEYS = [
 ] as const satisfies readonly (keyof StoredSettings)[];
 
 export type SettingsStorageKey = (typeof SETTINGS_STORAGE_KEYS)[number];
-export type SettingsStorageSnapshot = Partial<Pick<StoredSettings, SettingsStorageKey>>;
+export type SettingsStorageValues = Pick<StoredSettings, SettingsStorageKey>;
+export type SettingsStorageSnapshot = Partial<SettingsStorageValues>;
 export type SettingsStoragePatch = SettingsStorageSnapshot;
+export type SettingsStorageValue<K extends SettingsStorageKey> = SettingsStorageValues[K];
 
 export interface SettingsStorageAdapter {
-  getAll(): Promise<SettingsStorageSnapshot>;
-  get(keys: readonly SettingsStorageKey[]): Promise<SettingsStorageSnapshot>;
-  set(values: SettingsStoragePatch): Promise<void>;
+  readAll(): Promise<SettingsStorageSnapshot>;
+  read<K extends SettingsStorageKey>(
+    key: K,
+  ): Promise<SettingsStorageValue<K> | undefined>;
+  write(values: SettingsStoragePatch): Promise<void>;
 }
 
-export function resolveSettingsStorageKeys(
-  keys: readonly SettingsStorageKey[],
-): SettingsStorageKey[] {
-  return [...keys];
+export function listSettingsStorageKeys(): SettingsStorageKey[] {
+  return [...SETTINGS_STORAGE_KEYS];
 }
