@@ -75,16 +75,16 @@
     "message": "No readable text found"
   },
   "emptyStateHelp": {
-    "message": "No readable body text was detected on this page."
+    "message": "No text that can be used to calculate an article reading time was detected on this page."
   },
   "emptyStateAction": {
-    "message": "Open an article, blog post, or another page with body text, then open this extension again."
+    "message": "Go to an article, blog post, or another page where the body text is visible, then open this extension again."
   },
   "errorStateHelp": {
     "message": "Reload the page, then open the extension again."
   },
   "onboardingGuide": {
-    "message": "Open this extension on an article page to show its reading time automatically."
+    "message": "Start on an article page. Once the estimate appears, adjust the language and reading speed below."
   },
   "trialStatusOne": {
     "message": "Trial ends $DAYS$",
