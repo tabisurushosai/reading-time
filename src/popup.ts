@@ -87,6 +87,18 @@ function parseSpeedInput(id: SpeedInputId, fallback: number): number {
   return parseInt(getSpeedInput(id).value) || fallback;
 }
 
+function getSelectedReadingLanguage(): ReadingLanguage | undefined {
+  const checkedLanguageInput = document.querySelector<HTMLInputElement>(
+    'input[name="lang"]:checked',
+  );
+
+  if (!checkedLanguageInput) {
+    return undefined;
+  }
+
+  return checkedLanguageInput.value === "en" ? "en" : "ja";
+}
+
 function collectPageTextStats(): TextStats {
   const article =
     document.querySelector("article") ||
@@ -296,9 +308,9 @@ async function getTabCount() {
 }
 
 function updateDisplay() {
-  const langEl = document.querySelector('input[name="lang"]:checked') as HTMLInputElement;
-  if (!langEl) return;
-  const lang: ReadingLanguage = langEl.value === "en" ? "en" : "ja";
+  const lang = getSelectedReadingLanguage();
+  if (!lang) return;
+
   const stats = document.getElementById("stats");
   const readingTime = document.getElementById("reading-time");
 
