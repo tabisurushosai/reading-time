@@ -47,6 +47,15 @@ const resultStateActionMessageKeys: Partial<Record<ResultState, string>> = {
   empty: "emptyStateAction",
 };
 
+const resultStateReadingTimeMessageKeys: Partial<Record<ResultState, string>> = {
+  loading: "loadingReadingTimeResult",
+  error: "errorReadingTimeResult",
+};
+
+const resultStateStatsMessageKeys: Partial<Record<ResultState, string>> = {
+  loading: "loadingStats",
+};
+
 const uiLocale = chrome.i18n.getUILanguage().toLowerCase().startsWith("ja")
   ? "ja-JP"
   : "en-US";
@@ -98,6 +107,8 @@ function setResultState(state: ResultState) {
   const statusLabel = document.getElementById("status-label");
   const helpText = document.getElementById("result-help");
   const actionText = document.getElementById("result-action");
+  const readingTime = document.getElementById("reading-time");
+  const stats = document.getElementById("stats");
 
   if (card) {
     card.classList.remove("is-loading", "is-ready", "is-empty", "is-error");
@@ -119,6 +130,22 @@ function setResultState(state: ResultState) {
     const actionMessageKey = resultStateActionMessageKeys[state];
     actionText.innerText = actionMessageKey ? chrome.i18n.getMessage(actionMessageKey) : "";
     actionText.hidden = !actionMessageKey;
+  }
+
+  if (readingTime) {
+    const readingTimeMessageKey = resultStateReadingTimeMessageKeys[state];
+    if (readingTimeMessageKey) {
+      readingTime.innerText = chrome.i18n.getMessage(readingTimeMessageKey);
+    }
+  }
+
+  if (stats) {
+    const statsMessageKey = resultStateStatsMessageKeys[state];
+    if (statsMessageKey) {
+      stats.innerText = chrome.i18n.getMessage(statsMessageKey);
+    } else if (state === "error") {
+      stats.innerText = "";
+    }
   }
 }
 
@@ -194,6 +221,7 @@ function localizeUI() {
 
   const elements = {
     "app-title": "extName",
+    "app-subtitle": "extDesc",
     "label-lang-ja": "langJa",
     "label-lang-en": "langEn",
     "language-legend": "languageLegend",
@@ -262,14 +290,6 @@ async function getTabCount() {
   } catch (error) {
     console.error("Failed to execute script:", error);
     setResultState("error");
-    const stats = document.getElementById("stats");
-    const readingTime = document.getElementById("reading-time");
-    if (stats) {
-      stats.innerText = chrome.i18n.getMessage("errorOccurred");
-    }
-    if (readingTime) {
-      readingTime.innerText = "";
-    }
   }
 }
 

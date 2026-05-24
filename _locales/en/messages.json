@@ -56,11 +56,20 @@
   "emptyReadingTimeResult": {
     "message": "No readable text found"
   },
+  "loadingReadingTimeResult": {
+    "message": "Calculating"
+  },
+  "errorReadingTimeResult": {
+    "message": "Cannot display estimate"
+  },
   "errorOccurred": {
     "message": "Could not read this page"
   },
   "loadingStatus": {
     "message": "Checking page"
+  },
+  "loadingStats": {
+    "message": "Checking body text"
   },
   "readyStatus": {
     "message": "Reading time calculated"
