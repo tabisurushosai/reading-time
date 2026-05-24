@@ -18,6 +18,18 @@ export default tseslint.config(
     },
   },
   {
+    files: ["src/core/**/*.ts"],
+    rules: {
+      "no-restricted-globals": [
+        "error",
+        {
+          name: "chrome",
+          message: "src/core must stay platform-independent; use an adapter outside core.",
+        },
+      ],
+    },
+  },
+  {
     ignores: ["dist/**", "node_modules/**"],
   }
 );
