@@ -1,6 +1,6 @@
 import {
   createDisplayNumberFormatter,
-  createRelativeDayFormatter,
+  formatRelativeDaysFromNow,
   resolveDisplayLocale,
 } from "./core/displayFormat";
 import {
@@ -63,14 +63,9 @@ const resultStateStatsMessageKeys: Partial<Record<ResultState, string>> = {
 
 const uiLocale = resolveDisplayLocale(chrome.i18n.getUILanguage());
 const numberFormatter = createDisplayNumberFormatter(uiLocale);
-const relativeDayFormatter = createRelativeDayFormatter(uiLocale);
 
 function formatDisplayNumber(value: number): string {
   return numberFormatter.format(value);
-}
-
-function formatRelativeDaysFromNow(days: number): string {
-  return relativeDayFormatter.format(days, "day");
 }
 
 function getSpeedInput(id: SpeedInputId): HTMLInputElement {
@@ -113,7 +108,7 @@ function getTrialStatusMessage(trialRemainingDays: number): string {
   const days = Math.ceil(trialRemainingDays);
   const messageKey = days === 1 ? "trialStatusOne" : "trialStatus";
 
-  return chrome.i18n.getMessage(messageKey, [formatRelativeDaysFromNow(days)]);
+  return chrome.i18n.getMessage(messageKey, [formatRelativeDaysFromNow(days, uiLocale)]);
 }
 
 function setResultState(state: ResultState) {
@@ -318,7 +313,10 @@ function updateDisplay() {
 
   const minutes = estimateReadingMinutes(textStats, lang, speeds);
   readingTime.innerText = minutes > 0
-    ? chrome.i18n.getMessage("readingTimeResult", [formatDisplayNumber(minutes)])
+    ? chrome.i18n.getMessage(
+      minutes === 1 ? "readingTimeResultOne" : "readingTimeResult",
+      [formatDisplayNumber(minutes)],
+    )
     : chrome.i18n.getMessage("emptyReadingTimeResult");
 
   if (lang === "ja") {

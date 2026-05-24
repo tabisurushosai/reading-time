@@ -3,7 +3,7 @@
     "message": "よむ時間めやす"
   },
   "extDesc": {
-    "message": "今のページの読了時間の目安を表示します。長文を読む前の見通しに。"
+    "message": "現在のページの読了時間の目安を表示します。長文を読む前の見通しに使えます。"
   },
   "langJa": {
     "message": "日本語"
@@ -53,11 +53,19 @@
       }
     }
   },
+  "readingTimeResultOne": {
+    "message": "読了時間の目安：約$MINUTES$分",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
   "emptyReadingTimeResult": {
-    "message": "本文テキストを検出できませんでした"
+    "message": "本文テキストが見つかりませんでした"
   },
   "loadingReadingTimeResult": {
-    "message": "計算中です"
+    "message": "計算中..."
   },
   "errorReadingTimeResult": {
     "message": "読了時間を表示できません"
@@ -66,7 +74,7 @@
     "message": "ページを読み取れませんでした"
   },
   "loadingStatus": {
-    "message": "本文を読み取り中"
+    "message": "本文を読み取っています"
   },
   "loadingStats": {
     "message": "本文テキストを確認しています"
@@ -81,7 +89,7 @@
     "message": "検出した本文テキストと現在の読む速さをもとに算出しています。"
   },
   "emptyStatus": {
-    "message": "本文テキストなし"
+    "message": "本文テキストがありません"
   },
   "emptyStateHelp": {
     "message": "このタブでは記事本文らしいテキストを検出できませんでした。Chromeの新しいタブ、設定画面、画像中心のページでは計算できません。"
@@ -96,7 +104,7 @@
     "message": "はじめて使うときは、記事ページを開いてこのアイコンをクリックするだけで読了時間を確認できます。"
   },
   "trialStatusOne": {
-    "message": "試用期間は$DAYS$に終了します",
+    "message": "試用期間は$DAYS$で終了します",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -104,7 +112,7 @@
     }
   },
   "trialStatus": {
-    "message": "試用期間は$DAYS$に終了します",
+    "message": "試用期間は$DAYS$で終了します",
     "placeholders": {
       "days": {
         "content": "$1"
