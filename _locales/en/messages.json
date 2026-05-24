@@ -3,7 +3,7 @@
     "message": "Reading Time"
   },
   "extDesc": {
-    "message": "Shows an estimated reading time for the current page."
+    "message": "Shows an estimated reading time for the current page before you start reading."
   },
   "langJa": {
     "message": "Japanese"
@@ -24,13 +24,13 @@
     "message": "English reading speed"
   },
   "unitCharsPerMin": {
-    "message": "chars/min"
+    "message": "characters/min"
   },
   "unitWordsPerMin": {
     "message": "words/min"
   },
   "charCount": {
-    "message": "Character count: $COUNT$",
+    "message": "Characters: $COUNT$",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -38,7 +38,7 @@
     }
   },
   "wordCount": {
-    "message": "Word count: $COUNT$",
+    "message": "Words: $COUNT$",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -46,7 +46,15 @@
     }
   },
   "readingTimeResult": {
-    "message": "Estimated reading time: about $MINUTES$ min",
+    "message": "Estimated reading time: about $MINUTES$ minutes",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
+  "readingTimeResultOne": {
+    "message": "Estimated reading time: about $MINUTES$ minute",
     "placeholders": {
       "minutes": {
         "content": "$1"
@@ -54,7 +62,7 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "No readable body text detected"
+    "message": "No readable body text found"
   },
   "loadingReadingTimeResult": {
     "message": "Calculating..."

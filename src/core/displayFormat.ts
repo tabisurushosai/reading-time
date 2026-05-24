@@ -17,3 +17,16 @@ export function createRelativeDayFormatter(
     numeric: "always",
   });
 }
+
+export function formatRelativeDaysFromNow(
+  days: number,
+  locale: SupportedDisplayLocale,
+): string {
+  const roundedDays = Math.max(0, Math.ceil(days));
+
+  if (locale === "ja-JP") {
+    return `あと${createDisplayNumberFormatter(locale).format(roundedDays)}日`;
+  }
+
+  return createRelativeDayFormatter(locale).format(roundedDays, "day");
+}
