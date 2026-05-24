@@ -1,4 +1,5 @@
 import {
+  countTextStats,
   DEFAULT_READING_SPEEDS,
   estimateReadingMinutes,
   type ReadingLanguage,
@@ -63,12 +64,8 @@ function collectPageTextStats(): TextStats {
     document.querySelector("main") ||
     document.body;
   const text = article ? article.innerText || "" : "";
-  const trimmedText = text.trim();
 
-  return {
-    charCount: text.replace(/\s/g, "").length,
-    wordCount: trimmedText ? trimmedText.split(/\s+/).length : 0,
-  };
+  return countTextStats(text);
 }
 
 function getTrialStatusMessage(trialRemainingDays: number): string {
