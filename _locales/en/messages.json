@@ -65,6 +65,12 @@
   "readyStatus": {
     "message": "Reading time calculated"
   },
+  "loadingStateHelp": {
+    "message": "Reading body text and calculating with your current speed."
+  },
+  "readyStateHelp": {
+    "message": "Calculated from the detected body text and your current reading speed."
+  },
   "emptyStatus": {
     "message": "No readable text found"
   },
