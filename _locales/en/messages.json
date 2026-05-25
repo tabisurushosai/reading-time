@@ -62,7 +62,7 @@
     }
   },
   "emptyReadingTimeResult": {
-    "message": "No readable body text found"
+    "message": "No readable body text found yet"
   },
   "loadingReadingTimeResult": {
     "message": "Calculating..."
@@ -89,19 +89,19 @@
     "message": "Calculated from the detected body text and your current reading speed."
   },
   "emptyStatus": {
-    "message": "No body text"
+    "message": "Could not detect body text"
   },
   "emptyStateHelp": {
-    "message": "This tab does not appear to contain article body text. Chrome new tab pages, settings pages, and image-heavy pages cannot be estimated."
+    "message": "This tab does not include article body text that can be used for a reading-time estimate. Chrome new tab pages, settings pages, and image-heavy pages cannot be estimated."
   },
   "emptyStateAction": {
-    "message": "Open this extension again on an article, blog post, or another tab where the body text is visible."
+    "message": "Open an article, blog post, or another tab with visible body text, wait for it to load, then open this extension again."
   },
   "errorStateHelp": {
     "message": "Reload the page, then open the extension again."
   },
   "onboardingGuide": {
-    "message": "To get started, open an article page and click this icon to see the estimated reading time."
+    "message": "To get started, open an article page and click the extension icon to check the estimated reading time."
   },
   "trialStatusOne": {
     "message": "Trial ends $DAYS$",
