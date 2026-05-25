@@ -1,4 +1,5 @@
 import {
+  pickSettingsStorageSnapshot,
   listSettingsStorageKeys,
   type SettingsStorageAdapter,
   type SettingsStorageKey,
@@ -17,16 +18,14 @@ export function createChromeLocalStorageAdapter(
 ): SettingsStorageAdapter {
   return {
     async readAll(): Promise<SettingsStorageSnapshot> {
-      return storageArea.get(listSettingsStorageKeys()) as Promise<SettingsStorageSnapshot>;
+      return pickSettingsStorageSnapshot(await storageArea.get(listSettingsStorageKeys()));
     },
     async read<K extends SettingsStorageKey>(
       key: K,
     ): Promise<SettingsStorageValue<K> | undefined> {
-      const values = (await storageArea.get(key)) as Partial<
-        Record<K, SettingsStorageValue<K>>
-      >;
+      const values = pickSettingsStorageSnapshot(await storageArea.get(key));
 
-      return values[key];
+      return values[key] as SettingsStorageValue<K> | undefined;
     },
     async write(values) {
       await storageArea.set(values);
