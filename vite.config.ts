@@ -1,10 +1,18 @@
-import { cp, copyFile, mkdir } from "node:fs/promises";
+import { access, cp, copyFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type PluginOption } from "vite";
 
 const rootDir = dirname(fileURLToPath(import.meta.url));
 const extensionIconFiles = ["icon16.png", "icon48.png", "icon128.png"] as const;
+const requiredExtensionAssets = [
+  "manifest.json",
+  ...extensionIconFiles.map((iconFile) => `icons/${iconFile}`),
+] as const;
+
+async function ensureExtensionAssets(distDir: string) {
+  await Promise.all(requiredExtensionAssets.map((assetPath) => access(resolve(distDir, assetPath))));
+}
 
 function copyExtensionAssets(): PluginOption {
   return {
@@ -22,6 +30,7 @@ function copyExtensionAssets(): PluginOption {
         ),
         cp(resolve(rootDir, "_locales"), resolve(distDir, "_locales"), { recursive: true }),
       ]);
+      await ensureExtensionAssets(distDir);
     },
   };
 }
